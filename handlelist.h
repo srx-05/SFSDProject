@@ -6,8 +6,8 @@
 // Define struct for a subject 
 typedef struct subject { 
     char module[5]; 
-    float avg; 
-    int coeff; 
+    int coeff;
+    int note;
 } subject; 
  
 // Define struct for student information 
@@ -17,7 +17,8 @@ typedef struct student {
     char familyname[50]; 
     int yearofbirth; 
     char classe[3]; 
-    subject subjects[4]; 
+    subject subjects[4];
+    float avg;
     bool exist; 
 } student; 
  
