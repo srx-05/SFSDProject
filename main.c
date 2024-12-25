@@ -2,6 +2,9 @@
 #include<stdlib.h>
 #include<string.h>
 #include<stdbool.h>
+#include"handlelist.h"
+#include"functions.h"
+#include"students.h"
 
 
 int main()
