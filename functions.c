@@ -2,15 +2,15 @@
 #include <functions.h>
 void display_student(student *s) {
     printf("\nStudent Details:\n");
-    printf("Matricule: %d\n", s->matricule);
-    printf("Name: %s %s\n", s->name, s->surname);
-    printf("Year of Birth: %d\n", s->birthyear);
-    printf("Group: %s\n", s->group);
+    printf("Matricule: %d\n", s->id);
+    printf("Name: %s %s\n", s->familyname, s->firstname);
+    printf("Year of Birth: %d\n", s->yearofbirth);
+    printf("Group: %s\n", s->classe);
     printf("Grades:\n");
     for (int i = 0; i < 4; i++) {
-        printf("The subject %7s:\n \t %.2f (Coefficient: %d)\n",s->notes[i].subjname , s->notes[i].note, s->notes[i].coefficient);
+        printf("The subject %4s:\n \t %.2f (Coefficient: %d)\n",s->subjects[i].module , s->subjects[i].note, s->subjects[i].coeff);
     }
-    printf("Average: %.2f\n", s->total_average);
+    printf("Average: %.2f\n", s->avg);
 }
 bool search_student(const char *FILENAME, int *i ) {
     int matricule;
@@ -28,19 +28,19 @@ bool search_student(const char *FILENAME, int *i ) {
     bool found = false;
     while (fscanf(file,
             "%d %49s %49s %d %19s "
-            "%19s %f %d "
-            "%19s %f %d "
-            "%19s %f %d "
-            "%19s %f %d "
+            "%4s %d %f "
+            "%4s %d %f "
+            "%4s %d %f "
+            "%4s %d %f "
             "%f %d",
-            &s.matricule, s.name, s.surname, &s.birthyear, s.group,
-            s.notes[0].subjname, &s.notes[0].note, &s.notes[0].coefficient,
-            s.notes[1].subjname, &s.notes[1].note, &s.notes[1].coefficient,
-            s.notes[2].subjname, &s.notes[2].note, &s.notes[2].coefficient,
-            s.notes[3].subjname, &s.notes[3].note, &s.notes[3].coefficient,
-            &s.total_average, (int *)&s.exit_status)==19 ) {
+            &s.id, s.familyname, s.firstname, &s.yearofbirth, s.classe,
+            s.subjects[0].subj,  &s.subjects[0].coeff, &s.subjects[0].note,
+            s.subjects[1].subj,  &s.subjects[1].coeff, &s.subjects[1].note,
+            s.subjects[2].subj,  &s.subjects[2].coeff, &s.subjects[2].note,
+            s.subjects[3].subj,  &s.subjects[3].coeff, &s.subjects[3].note,
+            &s.avg, (int *)&s.exits)==19 ) {
                       (*i)++;
-        if (s.matricule == matricule && !s.exit_status) {
+        if (s.id == matricule && !s.exits) {
 
             found = true;
             break;
