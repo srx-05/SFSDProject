@@ -41,9 +41,9 @@ bool search_student(const char *FILENAME, int *i ) {
             s.subjects[1].subj,  &s.subjects[1].coeff, &s.subjects[1].note,
             s.subjects[2].subj,  &s.subjects[2].coeff, &s.subjects[2].note,
             s.subjects[3].subj,  &s.subjects[3].coeff, &s.subjects[3].note,
-            &s.avg, (int *)&s.exits)==19 ) {
+            &s.avg, (int *)&s.exist)==19 ) {
                       (*i)++;
-        if (s.id == matricule && !s.exits) {
+        if (s.id == matricule && !s.exist) {
 
             found = true;
             break;
