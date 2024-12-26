@@ -16,7 +16,7 @@ typedef struct {
     int group;
     Sub notes[4];
     float avg;
-    int exist; // 1 if exists, 0 if deleted
+    int exist;
 } Student;
 
 void physicalDeletion(const char *inputFile, const char *outputFile) {
@@ -32,7 +32,7 @@ void physicalDeletion(const char *inputFile, const char *outputFile) {
 
     Student temp;
     while (fread(&temp, sizeof(Student), 1, in)) {
-        if (temp.exist == 1) {
+        if (temp.exist == 0) {
             fwrite(&temp, sizeof(Student), 1, out);
         }
     }
@@ -40,7 +40,6 @@ void physicalDeletion(const char *inputFile, const char *outputFile) {
     fclose(in);
     fclose(out);
 
-    // Optionally, replace the input file with the output file
     remove(inputFile);
     rename(outputFile, inputFile);
 }
