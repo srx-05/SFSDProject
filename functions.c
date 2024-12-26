@@ -62,20 +62,6 @@ bool search_student(const char *FILENAME, int *position) {
     return found;
 }
 
-int main() {
-    int position;
-    bool student_found = search_student("students2.txt", &position);
-
-    if (student_found) {
-        printf("The position: %d\n", position);
-    } else {
-        printf("Student not found.\n");
-    }
-
-    return 0;
-}
-
-
 
 
 
