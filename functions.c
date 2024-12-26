@@ -8,7 +8,7 @@ void display_student(student *s) {
     printf("Group: %s\n", s->classe);
     printf("Grades:\n");
     for (int i = 0; i < 4; i++) {
-        printf("The subject %4s:\n \t %.2f (Coefficient: %d)\n",s->subjects[i].module , s->subjects[i].note, s->subjects[i].coeff);
+        printf("The subject %4s:\n \t %.2f (Coefficient: %d)\n",s->subjects[i].subj , s->subjects[i].note, s->subjects[i].coeff);
     }
     printf("Average: %.2f\n", s->avg);
 }
