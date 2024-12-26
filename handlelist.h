@@ -5,7 +5,7 @@
 
 // Define struct for a subject 
 typedef struct subject { 
-    char subj[5]; 
+    char subj[10]; 
     float note;
     int coeff;
 } subject; 
