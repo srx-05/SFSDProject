@@ -25,22 +25,26 @@ int main()
                 break;
             } 
             case 2 :{
-                int givId;
-                char modf;
-                printf("enter the ID of the student you are searching for : \n");
-                scanf("%d\n",&givId);
-                SearchStudent(givId);
-                printf("do you want to modify the student's information? (Y/N)\n");
-                scanf("%c",&modf);
-                do {
-                    if (strcmp(modf,"Y")==0)
-                    ModifyStudentData(givId);
-                else if (strcmp(modf,"N")==0)
+                int i;
+                bool isexist=SearchStudent("students_file.txt",&i);
+                if (isexist){
+                    char modf;
+                    printf("The position : %d",i);
+                    printf("do you want to modify the student's information? (Y/N)\n");
+                    scanf("%c",&modf);
+                    do {
+                        if (strcmp(modf,"Y")==0)
+                        ModifyStudentData(givId);
+                    else if (strcmp(modf,"N")==0)
+                        break;
+                    else
+                        printf("please answer with Y if yes, N otherwise\n");
+                    }while((strcmp(modf,"Y")!=0)&&(strcmp(modf,"N")!=0));
+                }
+                else {
+                    printf("Student not found.\n");
                     break;
-                else
-                    printf("please answer with Y if yes, N otherwise\n");
-                }while((strcmp(modf,"Y")!=0)&&(strcmp(modf,"N")!=0));
-                break;
+                }
             }
             case 3 :{
                 int givId;
