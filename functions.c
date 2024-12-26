@@ -11,7 +11,6 @@ void display_student(student *s) {
         printf("The subject %7s:\n \t %.2f (Coefficient: %d)\n",s->notes[i].subjname , s->notes[i].note, s->notes[i].coefficient);
     }
     printf("Average: %.2f\n", s->total_average);
-    printf("Exit Status: %s\n", s->exit_status ? "Deleted" : "Active");
 }
 bool search_student(const char *FILENAME, int *i ) {
     int matricule;
