@@ -11,10 +11,10 @@ typedef struct subject {
 } subject; 
  
 // Define struct for student information 
-typedef struct student { 
-    int id; 
+typedef struct student {
+    int id;
     char firstname[50]; 
-    char familyname[50]; 
+    char familyname[50];
     int yearofbirth; 
     char classe[3]; 
     subject subjects[4];
