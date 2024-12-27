@@ -95,4 +95,30 @@ bool SearchStudent(const char *FILENAME, int *position) {
 
 
 
+//physical deletion
+void physicalDelet(const char *inputFile, const char *outputFile) {
+    FILE *in = fopen(inputFile, "rb");
+    FILE *out = fopen(outputFile, "wb");
+    
+    if (in == NULL || out == NULL) {
+        printf("Error opening file!\n");
+        if (in) fclose(in);
+        if (out) fclose(out);
+        return;
+    }
+
+    Student temp;
+    while (fread(&temp, sizeof(Student), 1, in)) {
+        if (temp.exist == 0) {
+            fwrite(&temp, sizeof(Student), 1, out);
+        }
+    }
+
+    fclose(in);
+    fclose(out);
+
+    remove(inputFile);
+    rename(outputFile, inputFile);
+}
+
 
