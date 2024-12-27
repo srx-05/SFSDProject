@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include<stdbool.h>
+#include<windows.h>
 #include"handlelist.h"
 #include"functions.h"
 #include"students.h"
@@ -9,6 +10,9 @@
 
 int main()
 {
+    // node *head_of_std_list=filetolist("students.txt");
+    //not sure of this
+
     int choice;
     
     do {
@@ -61,10 +65,7 @@ int main()
                 break;
             }
             case 5 :{
-                char gvnClass[2];
-                printf("Enter the class you want to display : \n");
-                scanf("%2s",gvnClass);
-                DisplaybyClass(gvnClass);
+                DisplaybyClass();
                 break;
             }
             case 6 :{

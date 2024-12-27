@@ -5,5 +5,7 @@
 
 // Function that 
 
-void studenttonode(student std);
+void studenttonode(student *s);
+
+#endif
 

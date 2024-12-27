@@ -3,62 +3,49 @@
 #include <stdbool.h>
 #include <string.h>
 #include <functions.h>
-<<<<<<< HEAD
-#include <handlelist.h>
+#include "handlelist.h"
+#include "students.h"
 
 
 
-void Display(){
+void Displaybyclass(const char *filename){
+    char gvnclass[3];
+    bool text=false,occures=false;
+    node *class_list=NULL;
 
-   struct student std;
-   char class[3];
-   bool occures=false,text=false;
-   float temp_max;
-
-   FILE* f=fopen("test.txt","r");
-    if (f == NULL){
-        printf("Error occured");
-        return;
-    };
-
-
+    node* student_list=filetolist(filename);
+    
     printf("Enter the class you would like to display:\n");
-    scanf("%s",class);
+    scanf("%s",gvnclass);
 
-    while (fscanf(f,"%d %19s %19s %d %2s",&std.ID,std.fname,std.name,&std.Ybirth,std.class) == 5){
-
-        if (strcmp(std.class,class)==0)
-        {
+    while (student_list != NULL){
+        if (strcmp(student_list->studentData.classe,gvnclass) == 0)
+         {   occures=true;
             if(!text){
-                printf("The students of the class %s:\n\n",class);
+                printf("The students of the class %s:\n\n",gvnclass);
                 text=true;
+            };
+            node* newnode=createnode(student_list->studentData);
+            append_node(&class_list,newnode);
+            student_list=student_list->next;
             }
-            occures=true;
-            
-            printf("ID:%d\nfamily name:%s\nname:%s\nyear:%d\n\t************\n",std.ID,std.fname,std.name,std.Ybirth);
-        };  
+        };
 
-    } ; 
+    // decreasingorderlist(&class_list);
+    // displaylist(),
+    //  i will create this functions later dw
 
-    if (!occures)
+
+
+
+ if (!occures)
     {
         printf("Class is empty or misspelled, check again!");
     };
-      
-      fclose(f);
-=======
-void display_student(student *s) {
-    printf("\nStudent Details:\n");
-    printf("Matricule: %d\n", s->id);
-    printf("Name: %s %s\n", s->familyname, s->firstname);
-    printf("Year of Birth: %d\n", s->yearofbirth);
-    printf("Group: %s\n", s->classe);
-    printf("Grades:\n");
-    for (int i = 0; i < 4; i++) {
-        printf("The subject %4s:\n \t %.2f (Coefficient: %d)\n", s->subjects[i].subj , s->subjects[i].note, s->subjects[i].coeff);
-    }
-    printf("Average: %.2f\n", s->avg);
-}
+     
+};
+
+   
 
 bool search_student(const char *FILENAME, int *position) {
     int matricule;
@@ -104,7 +91,6 @@ bool search_student(const char *FILENAME, int *position) {
     }
 
     return found;
->>>>>>> 1368c52496ce9a2a2837d2d979cfef4b349820e1
 }
 
 

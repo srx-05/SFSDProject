@@ -40,6 +40,12 @@ node *filetolist(const char *file_name)
 void listofile(node **head_of_std_list)
 
 
+// Function to display list
+void Displaylist(node **head)
+
+void Decreasingorderlist(node **head)
+
+
 
 
 #endif
