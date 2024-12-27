@@ -12,7 +12,7 @@ void ModifyStudentData();
 
 void LogicalDelet();
 
-void DisplaybyClass(); //Displays all students of a giving class by their average in a decreasing order 
+void DisplaybyClass(); //Displays all students of a given class by their average in a decreasing order 
 
 void PhysicalDelet();
 
