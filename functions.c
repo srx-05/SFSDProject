@@ -47,7 +47,7 @@ void Displaybyclass(const char *filename){
 
    
 
-bool search_student(const char *FILENAME, int *position) {
+bool SearchStudent(const char *FILENAME, int *position) {
     int matricule;
     *position = 0;  // Initialize position
 
