@@ -3,8 +3,7 @@
 
 
 
-
-void AddStudent();
+addstudent(FILE *file, node *head);
 
 bool SearchStudent(const char *FILENAME, int *position);
 
