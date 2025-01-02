@@ -48,17 +48,19 @@ void Displaybyclass(const char *filename){
    
 
 bool SearchStudent(const char *FILENAME, int *position) {
+     FILE *file = fopen(FILENAME, "r");
+    if (file == NULL) {
+        printf("Error opening file.\n");
+        return false;
+    }
+    
     int matricule;
     *position = 0;  // Initialize position
 
     printf("\nEnter Matricule to search: ");
     scanf("%d", &matricule);
 
-    FILE *file = fopen(FILENAME, "r");
-    if (file == NULL) {
-        printf("Error opening file.\n");
-        return false;
-    }
+   
 
     student s;
     bool found = false;
