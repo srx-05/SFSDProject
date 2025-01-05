@@ -40,75 +40,8 @@ node *createnode(student content) {
     return newnode;
 }
 
-// Function to append a node to the linked list
-void append_node(node **head, student content) {
-    node *new_node = createnode(content);
-    if (!new_node) return;
 
-    if (*head == NULL) {
-        *head = new_node;
-        return;
-    }
 
-    node *temp = *head;
-    while (temp->next != NULL) {
-        temp = temp->next;
-    }
-    temp->next = new_node;
-}
-
-// Function to initialize students and return the head of the list
-node *initialize_students() {
-    node *head = NULL;
-   student students[40] = {
-    {1, "Ali", "Ahmed", 2001, "3A", {{"SFSD", 15.5, 4}, {"POO", 12.0, 3}, {"ANMT", 14.0, 2}, {"ALGE", 16.5, 5}}, true},
-    {2, "Moulay", "Sarah", 2000, "2B", {{"SFSD", 18.0, 4}, {"POO", 16.5, 3}, {"ANMT", 17.0, 2}, {"ALGE", 19.0, 5}}, true},
-    {3, "Zouaoui", "Sarah", 1999, "3A", {{"SFSD", 13.0, 4}, {"POO", 11.0, 3}, {"ANMT", 15.5, 2}, {"ALGE", 14.0, 5}}, true},
-    {4, "Benmoussa", "Karim", 2002, "1C", {{"SFSD", 10.0, 4}, {"POO", 9.5, 3}, {"ANMT", 12.0, 2}, {"ALGE", 11.0, 5}}, true},
-    {5, "Cherif", "Yasmine", 2003, "2B", {{"SFSD", 19.0, 4}, {"POO", 18.5, 3}, {"ANMT", 17.5, 2}, {"ALGE", 20.0, 5}}, true},
-    {6, "Haddad", "Amine", 2001, "3A", {{"SFSD", 14.0, 4}, {"POO", 13.0, 3}, {"ANMT", 15.0, 2}, {"ALGE", 16.0, 5}}, false},
-    {7, "Mezouar", "Fatima", 2002, "1A", {{"SFSD", 16.0, 4}, {"POO", 15.0, 3}, {"ANMT", 14.5, 2}, {"ALGE", 18.0, 5}}, true},
-    {8, "Khellaf", "Mourad", 2000, "2B", {{"SFSD", 12.0, 4}, {"POO", 10.5, 3}, {"ANMT", 11.0, 2}, {"ALGE", 13.0, 5}}, true},
-    {9, "Saidi", "Lila", 2003, "1C", {{"SFSD", 8.0, 4}, {"POO", 9.0, 3}, {"ANMT", 7.5, 2}, {"ALGE", 10.0, 5}}, true},
-    {10, "Djebbar", "Hamid", 2002, "3A", {{"SFSD", 20.0, 4}, {"POO", 19.5, 3}, {"ANMT", 18.0, 2}, {"ALGE", 17.0, 5}}, true},
-    {11, "Belarbi", "Malek", 1998, "3B", {{"SFSD", 15.0, 4}, {"POO", 14.0, 3}, {"ANMT", 12.5, 2}, {"ALGE", 13.0, 5}}, false},
-    {12, "Guerfi", "Yacine", 2000, "2A", {{"SFSD", 17.0, 4}, {"POO", 18.0, 3}, {"ANMT", 16.5, 2}, {"ALGE", 19.0, 5}}, true},
-    {13, "Amrani", "Samira", 2001, "3A", {{"SFSD", 13.5, 4}, {"POO", 12.0, 3}, {"ANMT", 11.0, 2}, {"ALGE", 14.0, 5}}, false},
-    {14, "Rahmouni", "Nadia", 1999, "1B", {{"SFSD", 9.0, 4}, {"POO", 8.5, 3}, {"ANMT", 10.0, 2}, {"ALGE", 9.0, 5}}, true},
-    {15, "Kaci", "Lina", 2003, "2B", {{"SFSD", 20.0, 4}, {"POO", 19.5, 3}, {"ANMT", 18.5, 2}, {"ALGE", 20.0, 5}}, true},
-    {16, "Boukhelfa", "Adam", 2002, "1C", {{"SFSD", 11.0, 4}, {"POO", 10.5, 3}, {"ANMT", 12.0, 2}, {"ALGE", 10.0, 5}}, false},
-    {17, "Saadallah", "Amina", 2001, "3B", {{"SFSD", 14.0, 4}, {"POO", 13.5, 3}, {"ANMT", 14.0, 2}, {"ALGE", 15.0, 5}}, true},
-    {18, "Hamdi", "Khaled", 2002, "2A", {{"SFSD", 18.0, 4}, {"POO", 17.0, 3}, {"ANMT", 16.0, 2}, {"ALGE", 19.0, 5}}, true},
-    {19, "Belhadi", "Amel", 1998, "1A", {{"SFSD", 10.0, 4}, {"POO", 9.5, 3}, {"ANMT", 8.0, 2}, {"ALGE", 11.0, 5}}, true},
-    {20, "Larbi", "Nassim", 2001, "2B", {{"SFSD", 12.5, 4}, {"POO", 13.0, 3}, {"ANMT", 14.0, 2}, {"ALGE", 15.0, 5}}, true},
-    {21, "Aouini", "Salima", 2003, "3A", {{"SFSD", 16.5, 4}, {"POO", 17.0, 3}, {"ANMT", 15.0, 2}, {"ALGE", 18.5, 5}}, true},
-    {22, "Chikhi", "Reda", 1999, "1B", {{"SFSD", 10.5, 4}, {"POO", 9.0, 3}, {"ANMT", 8.0, 2}, {"ALGE", 12.0, 5}}, false},
-    {23, "Medjahdi", "Farid", 2002, "1C", {{"SFSD", 14.0, 4}, {"POO", 13.5, 3}, {"ANMT", 14.0, 2}, {"ALGE", 15.0, 5}}, true},
-    {24, "Dib", "Leila", 2003, "3B", {{"SFSD", 19.0, 4}, {"POO", 18.5, 3}, {"ANMT", 17.0, 2}, {"ALGE", 20.0, 5}}, true},
-    {25, "Nezzar", "Fouad", 2001, "2A", {{"SFSD", 15.0, 4}, {"POO", 14.5, 3}, {"ANMT", 13.0, 2}, {"ALGE", 14.0, 5}}, false},
-    {26, "Belaid", "Amine", 1999, "2B", {{"SFSD", 10.0, 4}, {"POO", 11.0, 3}, {"ANMT", 12.0, 2}, {"ALGE", 13.0, 5}}, true},
-    {27, "Cherrad", "Wafa", 2000, "1A", {{"SFSD", 18.0, 4}, {"POO", 19.0, 3}, {"ANMT", 17.5, 2}, {"ALGE", 20.0, 5}}, true},
-    {28, "Fekir", "Imane", 2001, "2C", {{"SFSD", 13.0, 4}, {"POO", 14.0, 3}, {"ANMT", 12.5, 2}, {"ALGE", 15.0, 5}}, true},
-    {29, "Khir", "Redouane", 2003, "3A", {{"SFSD", 17.0, 4}, {"POO", 16.0, 3}, {"ANMT", 15.5, 2}, {"ALGE", 18.0, 5}}, true},
-    {30, "Selmani", "Hiba", 1998, "1B", {{"SFSD", 9.0, 4}, {"POO", 8.5, 3}, {"ANMT", 10.0, 2}, {"ALGE", 9.5, 5}}, false},
-    {31, "Abdi", "Oussama", 2002, "2A", {{"SFSD", 14.0, 4}, {"POO", 13.0, 3}, {"ANMT", 12.5, 2}, {"ALGE", 15.0, 5}}, true},
-    {32, "Ziani", "Malika", 1999, "3B", {{"SFSD", 19.5, 4}, {"POO", 20.0, 3}, {"ANMT", 18.5, 2}, {"ALGE", 19.0, 5}}, true},
-    {33, "Zerouki", "Tarek", 2003, "1C", {{"SFSD", 11.0, 4}, {"POO", 10.0, 3}, {"ANMT", 9.5, 2}, {"ALGE", 12.0, 5}}, true},
-    {34, "Mekki", "Soraya", 2000, "3A", {{"SFSD", 16.0, 4}, {"POO", 14.5, 3}, {"ANMT", 15.0, 2}, {"ALGE", 18.0, 5}}, true},
-    {35, "Rami", "Omar", 1998, "2C", {{"SFSD", 13.0, 4}, {"POO", 14.0, 3}, {"ANMT", 12.5, 2}, {"ALGE", 15.0, 5}}, true},
-    {36, "Bensalem", "Sofia", 2003, "1B", {{"SFSD", 10.0, 4}, {"POO", 9.5, 3}, {"ANMT", 8.5, 2}, {"ALGE", 12.0, 5}}, false},
-    {37, "Kamel", "Nadia", 1999, "3C", {{"SFSD", 18.5, 4}, {"POO", 19.0, 3}, {"ANMT", 17.0, 2}, {"ALGE", 20.0, 5}}, true},
-    {38, "Hassan", "Samir", 2000, "2A", {{"SFSD", 15.0, 4}, {"POO", 14.0, 3}, {"ANMT", 13.0, 2}, {"ALGE", 16.0, 5}}, true},
-    {39, "Merabet", "Nour", 2001, "3B", {{"SFSD", 19.0, 4}, {"POO", 18.5, 3}, {"ANMT", 17.5, 2}, {"ALGE", 20.0, 5}}, false},
-    {40, "Saadi", "Riad", 2002, "1C", {{"SFSD", 14.5, 4}, {"POO", 13.0, 3}, {"ANMT", 12.5, 2}, {"ALGE", 15.5, 5}}, true}
-};
-
-    for (int i = 0; i < 40; i++) {
-        append_node(&head, students[i]);
-    }
-
-    return head;
-}
 void modifylistaddnode(node *head, node *newnode) {
     node *parcour = head;
 
@@ -221,33 +154,10 @@ void addstudent(FILE *file, node *head) {
 int main()
 {
     FILE *file;
-    node *head = initialize_students();
+    node *head =
 
 
-   /* //I EXECUTE THIS SECTION ONLY ONE TIME JUST TO FILL UP THE ORIGINAL INFOSSSS
+   
 
-    FILE *file=fopen("Listes_Etudiants.txt","w");
-    if(file==NULL)
-    {
-        printf("didnt oppen sorry :(/n");
-    }
-    node *parcour=head;
-    while(parcour!=NULL)
-        {
-            fprintf(file,"id : %d\t  family name : %s\t firstname: %s\t year of birth : %d\t group : %s\t mark of %s : %.2f \t  coeff : %d \tmark of %s : %.2f coeff : %d\t mark of %s : %.2f coeff : %d \t mark of %s : %.2f coeff : %d \t FLAG : %d\n",
-                parcour->infos.id,parcour->infos.familyname,parcour->infos.firstname,parcour->infos.yearofbirth,
-                parcour->infos.classe,
-                parcour->infos.subjects[0].module,parcour->infos.subjects[0].avg,parcour->infos.subjects[0].coeff,
-                parcour->infos.subjects[1].module,parcour->infos.subjects[1].avg,parcour->infos.subjects[1].coeff,
-                parcour->infos.subjects[2].module,parcour->infos.subjects[2].avg,parcour->infos.subjects[2].coeff,
-                parcour->infos.subjects[3].module,parcour->infos.subjects[3].avg,parcour->infos.subjects[3].coeff,
-                parcour->infos.exist);
-        parcour=parcour->next;
-        }
-    fclose(file);
-    */
-
-
-    addstudent(file,head);
 
 }
