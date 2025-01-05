@@ -8,4 +8,7 @@ void  update(const char *studentfile,const char *updatefile);
 //average calculation function
 float calculateAverage(Student* student);
 
+//display function
+void display_student(student *s);
+
 #endif
