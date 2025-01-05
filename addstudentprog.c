@@ -40,34 +40,41 @@ typedef struct listnode {
     struct listnode *next; 
 } node; 
  
-// Function to allocate and initialize a new node 
-node *createnode(student content) { 
-    node *newnode = (node *)malloc(sizeof(node)); 
+
+ // Function to allocate and initialize a new node 
+node *createnode(student std) { 
+    node *newnode =(node *)malloc(sizeof(node));
+
     if (!newnode) { 
         perror("Memory allocation failed"); 
         return NULL; 
+    };
+
+    newnode->studentData=std;
+    newnode->next=NULL;
+
+    return newnode;
+} ;
+ 
+// Function to append a node to the linked list 
+void append_node(node **head,node *new_node){ 
+
+    if (*head == NULL) { 
+        *head = new_node; 
+        return; 
     } 
-    newnode->infos = content; 
-    newnode->next = NULL; 
-    return newnode; 
-} 
+ 
+    node *temp = *head; 
+    while (temp->next != NULL) { 
+        temp = temp->next; 
+    };
+
+    temp->next = new_node; 
+}; 
+
  
  
- 
-void modifylistaddnode(node *head, node *newnode) { 
-    node *parcour = head; 
- 
-    // Traverse to the last node in the list 
-    while (parcour->next != NULL) { 
-        parcour = parcour->next; 
-    } 
- 
-    // Set the new node's ID as the next ID in sequence 
-    newnode->infos.id = parcour->infos.id + 1; 
- 
-    // Link the new node to the end of the list 
-    parcour->next = newnode; 
-} 
+
  
  
 // Function to find the last ID from the file 
@@ -141,8 +148,8 @@ void addstudent(FILE *file, node *head) {
  
  
     // Create and add the new node to the list
-node *liststud = createnode(content); 
-    modifylistaddnode(head, liststud); 
+    node *liststud = createnode(content); 
+    append_node(&head, liststud); 
  
     // Open the file to append the new student's information 
     file = fopen("Listes_Etudiants.txt", "a"); 
@@ -167,8 +174,7 @@ node *liststud = createnode(content);
  
 int main() 
 { 
-    FILE *file; 
-    node *head = 
+   
  
  
     
