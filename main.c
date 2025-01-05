@@ -11,8 +11,10 @@
 
 int main()
 {
-    // node *head_of_std_list=filetolist("students.txt");
-    //not sure of this
+    node *head_of_std_list = filetolist("students.txt");
+    if (head_of_std_list==NULL) {
+        printf("Failed to load student list from file. Starting with an empty list.\n");
+    }
 
     int choice;
     
@@ -28,7 +30,8 @@ int main()
 
         switch (choice) {
             case 1 :{
-                AddStudent();
+                FILE *file=fopen("studentlist.txt","r");
+                AddStudent(file,&head_of_std_list);
                 break;
             } 
             case 2 :{
