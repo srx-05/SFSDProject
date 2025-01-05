@@ -11,17 +11,16 @@ typedef struct subject {
 // Define struct for student information 
 typedef struct student { 
     int id; 
-    char familyname[50]; 
-    char firstname[50]; 
-    int yearofbirth; 
-    char classe[3]; 
+    char familyName[50]; 
+    char firstName[50]; 
+    int yearOfBirth; 
+    char Class[3]; 
     subject subjects[4];
     float avg;
-    int exist; 
-    struct student *next;
-    
+    int exist;
+    struct student *next; 
 } student; 
-
+  
  
 // Function to allocate and initialize a new node 
 student *createnode(student std); 
