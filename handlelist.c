@@ -36,9 +36,9 @@ void append_node(student **head,student *new_node){
 }; 
 
 //function to upload a file into a linked list
-node *filetolist(const char *file_name) {
+student *filetolist(const char *file_name) {
     student std1;
-    node *head = NULL;
+    student *head = NULL;
     FILE *file = fopen(file_name, "r");
     if (file == NULL) {
         perror("Error opening the file");
@@ -58,7 +58,7 @@ node *filetolist(const char *file_name) {
                   std1.subjects[2].subj, &std1.subjects[2].note, &std1.subjects[2].coeff,
                   std1.subjects[3].subj, &std1.subjects[3].note, &std1.subjects[3].coeff,
                   &std1.avg, &std1.exist) == 19) {
-        node *std_node = createnode(std1);
+        student *std_node = createnode(std1);
         if (!std_node) {
             printf("Error: importing a student failed!\n");
             fclose(file);
@@ -76,7 +76,7 @@ void list_to_file(node *head, const char *filename) {
         printf("Ensure that the program has write permissions for '%s'.\n", filename);
         return;
     }
-    node *current = head;
+    student *current = head;
     while (current != NULL) {
         student s = current->studentData;
         fprintf(file,
@@ -99,8 +99,8 @@ void list_to_file(node *head, const char *filename) {
 }
 
 // Function to search for a student by matricule
-node *search_student(node *head, int id) {
-    node *current = head;
+student *search_student(node *head, int id) {
+    student *current = head;
     while (current != NULL) {
         if (current->studentData.id == id && current->studentData.exist == 0) {
             return current;
