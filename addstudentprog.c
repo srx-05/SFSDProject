@@ -30,7 +30,9 @@ typedef struct node {
     struct node *next;
 }  
  
-
+float calculateAverage(student* Student) {
+    return (Student->subjects[1]->note * 4 + Student->subjects[2]->note * 3 + Student->subjects[3]->note * 2 + Student->subjects[4]->note * 5) / 14.0; 
+}
  
 // Define struct for a node in the linked list 
 typedef struct listnode { 
@@ -123,7 +125,8 @@ void addstudent(FILE *file, node *head) {
     } 
     while (((content.subjects[0].note<0)||(content.subjects[0].note>20))||((content.subjects[1].note<0)||(content.subjects[1].note>20))||((content.subjects[2].note<0)||(content.subjects[2].note>20))||((content.subjects[3].note<0)||(content.subjects[3].note>20))); 
     content.exist = true; 
- 
+    content.avg = calculateAverag(content);
+    
     // Get the last ID from the file and assign the next ID 
     int last_id = get_last_id_from_file(file); 
     content.id = last_id + 1; 
@@ -148,13 +151,14 @@ node *liststud = createnode(content);
         return; 
     } 
  
-    fprintf(file, "id : %d\t  family name : %s\t firstname: %s\t year of birth : %d\t group : %s\t mark of %s : %.2f \t  coeff : %d \tmark of %s : %.2f coeff : %d\t mark of %s : %.2f coeff : %d \t mark of %s : %.2f coeff : %d \t FLAG : %d\n", 
+    fprintf(file, "id : %d\t  family name : %s\t firstname: %s\t year of birth : %d\t group : %s\t mark of %s : %.2f \t  coeff : %d \tmark of %s : %.2f coeff : %d\t mark of %s : %.2f coeff : %d \t mark of %s : %.2f coeff : %d \t Average : %f \t  FLAG : %d\n", 
             content.id, content.familyname, content.firstname, content.yearofbirth, content.classe, 
             content.subjects[0].subj, content.subjects[0].avg,content.subjects[0].coeff, 
             content.subjects[1].subj, content.subjects[1].avg,content.subjects[1].coeff, 
             content.subjects[2].subj, content.subjects[2].avg,content.subjects[2].coeff, 
             content.subjects[3].subj, content.subjects[3].avg, content.subjects[3].coeff, 
-            content.exist); 
+            content.avg,content.exist); 
+            
  
     fclose(file); 
 } 
