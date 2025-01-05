@@ -45,7 +45,7 @@ int main()
                         scanf(" %c",&modf);
                         modf = toupper(modf);
                         if (modf=='Y'){
-                            ModifyStudentData(givId);
+                            ModifyStudentData(&head_of_std_list,"student.txt",givId);
                             break;
                         }
                         else if (modf=='N')
@@ -63,7 +63,7 @@ int main()
                 int givId;
                 printf("enter the ID of the student you want to modifie his information : \n");
                 scanf("%d",&givId);
-                ModifyStudentData(givId);
+                ModifyStudentData(&head_of_std_list,"student.txt",givId);
                 break;
             }
             case 4 :{
