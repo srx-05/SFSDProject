@@ -11,37 +11,41 @@
 void Displaybyclass(const char *filename){
     char gvnclass[3];
     bool text=false,occures=false;
-    node *class_list=NULL;
+    student *class_list=NULL;
 
-    node* student_list=filetolist(filename);
+    student *student_list=filetolist(filename);
     
     printf("Enter the class you would like to display:\n");
     scanf("%s",gvnclass);
 
     while (student_list != NULL){
-        if (strcmp(student_list->studentData.classe,gvnclass) == 0)
+        if (strcmp(student_list->classe,gvnclass) == 0)
          {   occures=true;
             if(!text){
                 printf("The students of the class %s:\n\n",gvnclass);
                 text=true;
             };
-            node* newnode=createnode(student_list->studentData);
+            student* newnode=createnode(student_list->studentData);
             append_node(&class_list,newnode);
             student_list=student_list->next;
-            }
-        };
-
-    // decreasingorderlist(&class_list);
-    // displaylist(),
-    //  i will create this functions later dw
+        }
+    };
 
 
-
-
- if (!occures)
+    if (!occures)
     {
         printf("Class is empty or misspelled, check again!");
+        return;
     };
+
+    decreasingorderlist(&class_list);
+    displaylist(&class_list);
+    
+
+
+
+
+
      
 };
 

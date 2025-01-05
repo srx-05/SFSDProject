@@ -18,32 +18,30 @@ typedef struct student {
     subject subjects[4];
     float avg;
     int exist; 
+    struct student *next;
+    
 } student; 
- 
-// Define struct for a node in the linked list 
-typedef struct node { 
-    student studentData; 
-    struct node *next;
-} node; 
+
  
 // Function to allocate and initialize a new node 
-node *createnode(student std); 
+student *createnode(student std); 
  
 // Function to append a node to the linked list 
-void append_node(node **head,node *new_node);
+void append_node(student **head,student *new_node);
 
 
 // Function to fill the file content into a linked list
-node *filetolist(const char *file_name)
+student *filetolist(const char *file_name)
 
 //Function to fill the file with a linked list content
-void listofile(node **head_of_std_list)
+void listofile(student **head)
 
 
 // Function to display list
-void Displaylist(node **head)
+void Displaylist(student *head)
 
-void Decreasingorderlist(node **head)
+//Funcion to order a list of students by their in a decreasing order 
+student *Decreasingorderlist(student **head)
 
 
 
