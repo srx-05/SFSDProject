@@ -17,14 +17,10 @@ typedef struct student {
     char classe[3]; 
     subject subjects[4];
     float avg;
-    int exist; 
+    int exist;
+    struct student *next; 
 } student; 
- 
-// Define struct for a node in the linked list 
-typedef struct node { 
-    student studentData; 
-    struct node *next;
-} node; 
+  
  
 // Function to allocate and initialize a new node 
 node *createnode(student std); 
