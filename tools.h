@@ -3,7 +3,9 @@
 
 
 //file weekly update function
-void  update(const char *studentfile,const char *updatefile)
+void  update(const char *studentfile,const char *updatefile);
 
+//average calculation function
+float calculateAverage(Student* student);
 
 #endif

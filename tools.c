@@ -50,3 +50,9 @@ void  update(const char *studentfile,const char *updatefile){
     fclose(upd);
     fclose(f); 
 }
+
+
+//average function
+float calculateAverage(student* Student) {
+    return (Student->subjects[1]->note * 4 + Student->subjects[2]->note * 3 + Student->subjects[3]->note * 2 + Student->subjects[4]->note * 5) / 14.0; 
+}
