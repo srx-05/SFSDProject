@@ -11,4 +11,8 @@ float calculateAverage(Student* student);
 //display function
 void display_student(student *s);
 
+
+// Function to find the last ID from the file 
+int get_last_id_from_file(FILE *file);
+
 #endif

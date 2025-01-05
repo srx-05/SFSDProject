@@ -98,3 +98,30 @@ void display_student(student *s) {
     }
     printf("Average: %.2f\n", s->avg);
 }
+
+
+
+// Function to find the last ID from the file 
+int get_last_id_from_file(FILE *file) { 
+   file = fopen( "Listes_Etudiants.txt", "r"); 
+    if (!file) { 
+        printf("Failed to open file for reading.\n"); 
+        return 0; // Return 0 if the file doesn't exist or cannot be opened 
+    } 
+ 
+    int last_id = 0; 
+    char buffer[512]; // Buffer to read lines from the file 
+ 
+    // Read the file line by line to find the last ID 
+    while (fgets(buffer, sizeof(buffer), file)) { 
+        int temp_id; 
+        if (sscanf(buffer, "id : %d", &temp_id) == 1) { 
+            if (temp_id > last_id) { 
+                last_id = temp_id; 
+            } 
+        } 
+    } 
+ 
+    fclose(file); 
+    return last_id; 
+}
