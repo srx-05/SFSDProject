@@ -44,7 +44,7 @@ int main()
                         scanf(" %c",&modf);
                         modf = toupper(modf);
                         if (modf=='Y'){
-                            ModifyStudentData(&head_of_std_list,"student.txt",givId);
+                            ModifyStudentData(&head_of_std_list,"student.txt",i);
                             break;
                         }
                         else if (modf=='N')
