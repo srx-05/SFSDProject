@@ -79,7 +79,7 @@ int main()
                 break;
             }
             case 5 :{
-                displayByClass("studentlist.txt");
+                displayByClass(&head_of_std_list);
                 break;
             }
             case 6 :{

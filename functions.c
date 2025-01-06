@@ -8,7 +8,7 @@
 
 
 
-void displayByclass(const char *filename){
+void displayByclass(student *head){
     char gvnclass[3];
     bool text=false,occures=false;
     student *class_list=NULL;
