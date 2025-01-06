@@ -41,12 +41,6 @@ void Displaybyclass(const char *filename){
     decreasingorderlist(&class_list);
     displaylist(&class_list);
     
-
-
-
-
-
-     
 };
 
    
@@ -127,7 +121,7 @@ void physicalDelet(const char *inputFile, const char *outputFile) {
     rename(outputFile, inputFile);
 }
 // Procedure to create and add a node with content 
-void addstudent(FILE *file, node *head) { 
+void addstudent(FILE *file, student *head) { 
     subject subjects[4]; 
     student content; 
  
@@ -172,8 +166,8 @@ void addstudent(FILE *file, node *head) {
  
  
     // Create and add the new node to the list
-node *liststud = createnode(content); 
-    modifylistaddnode(head, liststud); 
+    student *liststud = createnode(content); 
+   appe
  
     // Open the file to append the new student's information 
     file = fopen("Listes_Etudiants.txt", "a"); 
