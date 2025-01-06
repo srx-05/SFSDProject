@@ -52,9 +52,16 @@ void  update(const char *studentfile,const char *updatefile){
 }
 
 
-//average function
+// Function to calculate a student's weighted average
 float calculateAverage(student* Student) {
-    return (Student->subjects[1]->note * 4 + Student->subjects[2]->note * 3 + Student->subjects[3]->note * 2 + Student->subjects[4]->note * 5) / 14.0; 
+    float totalScore = 0;
+    int totalCoeff = 0;
+
+    for (int i = 0; i < 4; i++) {
+        totalScore += Student->subjects[i].note * Student->subjects[i].coeff;
+        totalCoeff += Student->subjects[i].coeff;
+    }
+    return totalScore / totalCoeff;
 }
 
 
