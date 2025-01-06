@@ -8,7 +8,7 @@
 
 
 
-void Displaybyclass(const char *filename){
+void displayByclass(const char *filename){
     char gvnclass[3];
     bool text=false,occures=false;
     student *class_list=NULL;
@@ -41,11 +41,17 @@ void Displaybyclass(const char *filename){
     decreasingorderlist(&class_list);
     displaylist(&class_list);
     
+
+
+
+
+
+     
 };
 
    
 
-bool SearchStudent(const char *FILENAME, int *position) {
+bool searchStudent(const char *FILENAME, int *position) {
      FILE *file = fopen(FILENAME, "r");
     if (file == NULL) {
         printf("Error opening file.\n");
@@ -53,6 +59,8 @@ bool SearchStudent(const char *FILENAME, int *position) {
     }
     
     int matricule;
+    *position = 0;  // Initialize position
+
     printf("\nEnter Matricule to search: ");
     scanf("%d", &matricule);
 
@@ -73,7 +81,8 @@ bool SearchStudent(const char *FILENAME, int *position) {
             s.subjects[2].subj,  &s.subjects[2].note, &s.subjects[2].coeff,
             s.subjects[3].subj,  &s.subjects[3].note, &s.subjects[3].coeff,
             &s.avg, (int *)&s.exist) == 19) {
-        
+
+        (*position)++;
         if (s.id == matricule && s.exist == 0) {  // Make sure to use `s.exist == false`
             found = true;
             break;
@@ -82,10 +91,8 @@ bool SearchStudent(const char *FILENAME, int *position) {
     fclose(file);
 
     if (!found) {
-        *position = 0;
         printf("Student not found.\n");
     } else {
-        *position = matricule;
         display_student(&s);
     }
 
@@ -214,7 +221,7 @@ void modifyStudent(node **head, const char *filename, int id) {
     }
 
     // Search for the student in the list
-    node *student_node = search_student(student_list, id);
+    student *student_node = searchStudent(student_list, id);
     if (!student_node) {
         printf("Student with ID %d not found or is deleted.\n", id);
         return;

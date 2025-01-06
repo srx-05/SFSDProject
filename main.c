@@ -3,6 +3,7 @@
 #include<string.h>
 #include<stdbool.h>
 #include<time.h>
+#include<ctype.h>
 #include"handlelist.h"
 #include"functions.h"
 #include"tools.h"
@@ -10,7 +11,7 @@
 
 int main()
 {
-    node *head_of_std_list = filetolist("students.txt");
+    student *head_of_std_list = filetolist("students.txt");
     if (head_of_std_list==NULL) {
         printf("Failed to load student list from file. Starting with an empty list.\n");
     }
@@ -34,13 +35,13 @@ int main()
                     printf("Error: Could not open studentlist.txt\n");
                     break;
                 }
-                AddStudent(file,&head_of_std_list);
+                addStudent(file,&head_of_std_list);
                 fclose(file);
                 break;
             } 
             case 2 :{
                 int i;
-                bool isexist=SearchStudent("studentlist.txt",&i);
+                bool isexist=searchStudent("studentlist.txt",&i);
                 if (isexist){
                     char modf;
                     printf("The position : %d",i);
@@ -49,7 +50,7 @@ int main()
                         scanf(" %c",&modf);
                         modf = toupper(modf);
                         if (modf=='Y'){
-                            ModifyStudentData(&head_of_std_list,"studentlist.txt",i);
+                            modifyStudent(&head_of_std_list,"studentlist.txt",i);
                             break;
                         }
                         else if (modf=='N')
@@ -67,18 +68,18 @@ int main()
                 int givId;
                 printf("enter the ID of the student you want to modifie his information : \n");
                 scanf("%d",&givId);
-                ModifyStudentData(&head_of_std_list,"studentlist.txt",givId);
+                modifyStudent(&head_of_std_list,"studentlist.txt",givId);
                 break;
             }
             case 4 :{
                 int givId;
                 printf("enter the ID of the student you want to delete : \n");
                 scanf("%d",&givId);
-                LogicalDelet(&head_of_std_list,givId);
+                logicalDelet(&head_of_std_list,givId);
                 break;
             }
             case 5 :{
-                DisplaybyClass("studentlist.txt");
+                displayByClass("studentlist.txt");
                 break;
             }
             case 6 :{
@@ -102,7 +103,7 @@ int main()
                     scanf(" %c",&userupd);
                     userupd = toupper(userupd);
                     if (userupd=='Y'){
-                        PhysicalDelet("studentlist.txt");
+                        physicalDelet("studentlist.txt");
                         break;
                     }
                     else if (userupd=='N')
