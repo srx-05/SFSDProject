@@ -70,11 +70,11 @@ int main()
                 int givId;
                 printf("enter the ID of the student you want to delete : \n");
                 scanf("%d",&givId);
-                LogicalDelet(givId);
+                LogicalDelet(&head_of_std_list,givId);
                 break;
             }
             case 5 :{
-                DisplaybyClass();
+                DisplaybyClass("studentlist.txt");
                 break;
             }
             case 6 :{
