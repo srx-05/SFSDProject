@@ -30,12 +30,17 @@ int main()
         switch (choice) {
             case 1 :{
                 FILE *file=fopen("studentlist.txt","r");
+                if (file == NULL) {
+                    printf("Error: Could not open studentlist.txt\n");
+                    break;
+                }
                 AddStudent(file,&head_of_std_list);
+                fclose(file);
                 break;
             } 
             case 2 :{
                 int i;
-                bool isexist=SearchStudent("students_file.txt",&i);
+                bool isexist=SearchStudent("studentlist.txt",&i);
                 if (isexist){
                     char modf;
                     printf("The position : %d",i);
@@ -44,7 +49,7 @@ int main()
                         scanf(" %c",&modf);
                         modf = toupper(modf);
                         if (modf=='Y'){
-                            ModifyStudentData(&head_of_std_list,"student.txt",i);
+                            ModifyStudentData(&head_of_std_list,"studentlist.txt",i);
                             break;
                         }
                         else if (modf=='N')
@@ -62,7 +67,7 @@ int main()
                 int givId;
                 printf("enter the ID of the student you want to modifie his information : \n");
                 scanf("%d",&givId);
-                ModifyStudentData(&head_of_std_list,"student.txt",givId);
+                ModifyStudentData(&head_of_std_list,"studentlist.txt",givId);
                 break;
             }
             case 4 :{
