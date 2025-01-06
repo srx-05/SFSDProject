@@ -118,7 +118,7 @@ void freeStudentList(Student* head) {
 void physicalDeletion(const char* filename) {
     Student* studentList = FileToList(filename);
     if (!studentList) {
-        fprintf(stderr, "Erreur lors du chargement des étudiants depuis le fichier : %s\n", filename);
+        fprintf(stderr, "Erreur lors du chargement des etudiants depuis le fichier : %s\n", filename);
         return;
     }
 
@@ -131,7 +131,7 @@ void physicalDeletion(const char* filename) {
 int main() {
     const char* filename = "camarche.txt";
 
-    printf("Chargement des étudiants...\n");
+    printf("Chargement des etudiants...\n");
     Student* studentList = FileToList(filename);
     if (studentList) {
         freeStudentList(studentList);
@@ -140,6 +140,6 @@ int main() {
     printf("Suppression physique...\n");
     physicalDeletion(filename);
 
-    printf("Suppression physique effectuée avec succès.\n");
+    printf("Suppression physique effectuee avec succes.\n");
     return 0;
 }
