@@ -1,7 +1,9 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>
+#include<tools.h>
 #include"functions.h"
+#include"handllist.h"
 
 //file weekly update function
 void  update(const char *studentfile,const char *updatefile){
