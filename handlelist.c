@@ -69,16 +69,15 @@ student *filetolist(const char *file_name) {
     fclose(file);
     return head;
 }
-void list_to_file(node *head, const char *filename) {
+void list_to_file( *head, const char *filename) {
     FILE *file = fopen(filename, "w");
     if (file == NULL) {
         perror("Error opening file for writing");
         printf("Ensure that the program has write permissions for '%s'.\n", filename);
         return;
     }
-    student *current = head;
+    student *current = *head;
     while (current != NULL) {
-        student s = current->studentData;
         fprintf(file,
                 "%d %s %s %d %s "
                 "%s %.2f %d "
@@ -113,26 +112,23 @@ student *search_student(node *head, int id) {
 //function to order a list of students in a decreasing order 
 student *Decreasingorderlist(student **head){
 
-    if (*head==NULL || (*head)->next==NULL)//list is empty or has only one student
-    {
-        printf("Nothing to sort");
+    if (*head == NULL  (*head)->next == NULL) {
+        printf("Nothing to sort\n");
         return;
     }
 
-    student *sorted=NULL;
+    student *sorted = NULL;
+    student *current = *head;
 
-    student *current= *head;
+    while (current != NULL) {
+        student *next = current->next;
 
-    while (current!=NULL)
-    {
-        student *next=current->next;
-
-        if (sorted == NULL || current->average > sorted->average) {
+        if (sorted == NULL  current->avg > sorted->avg) {
             current->next = sorted;
             sorted = current;
         } else {
-            student* temp = sorted;
-            while (temp->next != NULL && temp->next->average >= current->average) {
+            student *temp = sorted;
+            while (temp->next != NULL && temp->next->avg >= current->avg) {
                 temp = temp->next;
             }
             current->next = temp->next;
@@ -142,7 +138,7 @@ student *Decreasingorderlist(student **head){
         current = next;
     }
 
-    *head = sorted;    
+    *head = sorted;  
 }
 
 void Displaylist(student *head){
