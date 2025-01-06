@@ -98,7 +98,7 @@ int main()
                     scanf(" %c",&userupd);
                     userupd = toupper(userupd);
                     if (userupd=='Y'){
-                        PhysicalDelet();
+                        PhysicalDelet("studentlist.txt");
                         break;
                     }
                     else if (userupd=='N')
