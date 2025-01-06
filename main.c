@@ -5,14 +5,15 @@
 #include<time.h>
 #include"handlelist.h"
 #include"functions.h"
-#include"students.h"
 #include"tools.h"
 
 
 int main()
 {
-    // node *head_of_std_list=filetolist("students.txt");
-    //not sure of this
+    node *head_of_std_list = filetolist("students.txt");
+    if (head_of_std_list==NULL) {
+        printf("Failed to load student list from file. Starting with an empty list.\n");
+    }
 
     int choice;
     
@@ -28,7 +29,8 @@ int main()
 
         switch (choice) {
             case 1 :{
-                AddStudent();
+                FILE *file=fopen("studentlist.txt","r");
+                AddStudent(file,&head_of_std_list);
                 break;
             } 
             case 2 :{
@@ -42,7 +44,7 @@ int main()
                         scanf(" %c",&modf);
                         modf = toupper(modf);
                         if (modf=='Y'){
-                            ModifyStudentData(givId);
+                            ModifyStudentData(&head_of_std_list,"student.txt",i);
                             break;
                         }
                         else if (modf=='N')
@@ -60,18 +62,18 @@ int main()
                 int givId;
                 printf("enter the ID of the student you want to modifie his information : \n");
                 scanf("%d",&givId);
-                ModifyStudentData(givId);
+                ModifyStudentData(&head_of_std_list,"student.txt",givId);
                 break;
             }
             case 4 :{
                 int givId;
                 printf("enter the ID of the student you want to delete : \n");
                 scanf("%d",&givId);
-                LogicalDelet(givId);
+                LogicalDelet(&head_of_std_list,givId);
                 break;
             }
             case 5 :{
-                DisplaybyClass();
+                DisplaybyClass("studentlist.txt");
                 break;
             }
             case 6 :{
@@ -95,7 +97,7 @@ int main()
                     scanf(" %c",&userupd);
                     userupd = toupper(userupd);
                     if (userupd=='Y'){
-                        PhysicalDelet();
+                        PhysicalDelet("studentlist.txt");
                         break;
                     }
                     else if (userupd=='N')

@@ -1,7 +1,9 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>
+#include<tools.h>
 #include"functions.h"
+#include"handllist.h"
 
 //file weekly update function
 void  update(const char *studentfile,const char *updatefile){
@@ -52,9 +54,16 @@ void  update(const char *studentfile,const char *updatefile){
 }
 
 
-//average function
+// Function to calculate a student's weighted average
 float calculateAverage(student* Student) {
-    return (Student->subjects[1]->note * 4 + Student->subjects[2]->note * 3 + Student->subjects[3]->note * 2 + Student->subjects[4]->note * 5) / 14.0; 
+    float totalScore = 0;
+    int totalCoeff = 0;
+
+    for (int i = 0; i < 4; i++) {
+        totalScore += Student->subjects[i].note * Student->subjects[i].coeff;
+        totalCoeff += Student->subjects[i].coeff;
+    }
+    return totalScore / totalCoeff;
 }
 
 
@@ -99,29 +108,3 @@ void display_student(student *s) {
     printf("Average: %.2f\n", s->avg);
 }
 
-
-
-// Function to find the last ID from the file 
-int get_last_id_from_file(FILE *file) { 
-   file = fopen( "Listes_Etudiants.txt", "r"); 
-    if (!file) { 
-        printf("Failed to open file for reading.\n"); 
-        return 0; // Return 0 if the file doesn't exist or cannot be opened 
-    } 
- 
-    int last_id = 0; 
-    char buffer[512]; // Buffer to read lines from the file 
- 
-    // Read the file line by line to find the last ID 
-    while (fgets(buffer, sizeof(buffer), file)) { 
-        int temp_id; 
-        if (sscanf(buffer, "id : %d", &temp_id) == 1) { 
-            if (temp_id > last_id) { 
-                last_id = temp_id; 
-            } 
-        } 
-    } 
- 
-    fclose(file); 
-    return last_id; 
-}
