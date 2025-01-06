@@ -59,8 +59,6 @@ bool SearchStudent(const char *FILENAME, int *position) {
     }
     
     int matricule;
-    *position = 0;  // Initialize position
-
     printf("\nEnter Matricule to search: ");
     scanf("%d", &matricule);
 
@@ -81,8 +79,7 @@ bool SearchStudent(const char *FILENAME, int *position) {
             s.subjects[2].subj,  &s.subjects[2].note, &s.subjects[2].coeff,
             s.subjects[3].subj,  &s.subjects[3].note, &s.subjects[3].coeff,
             &s.avg, (int *)&s.exist) == 19) {
-
-        (*position)++;
+        
         if (s.id == matricule && s.exist == 0) {  // Make sure to use `s.exist == false`
             found = true;
             break;
@@ -91,8 +88,10 @@ bool SearchStudent(const char *FILENAME, int *position) {
     fclose(file);
 
     if (!found) {
+        *position = 0;
         printf("Student not found.\n");
     } else {
+        *position = matricule;
         display_student(&s);
     }
 
