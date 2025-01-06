@@ -13,7 +13,7 @@ void displayByclass(student *head){
     bool text=false,occures=false;
     student *class_list=NULL;
 
-    student *student_list=filetolist(filename);
+    
     
     printf("Enter the class you would like to display:\n");
     scanf("%s",gvnclass);
@@ -273,3 +273,51 @@ void modifyStudent(node **head, const char *filename, int id) {
 
     } while (choice != 0);
 }
+
+void physicalDeletion(const char* filename) {
+    Student* studentList = FileToList(filename);
+    if (!studentList) {
+        fprintf(stderr, "Erreur lors du chargement des etudiants depuis le fichier : %s\n", filename);
+        return;
+    }
+
+    ListToFile(filename, studentList);
+
+    freeStudentList(studentList);
+}
+
+
+void LogicalDeleting(student *head) {
+    if (head == NULL) {
+        printf("No students found in the list.\n");
+        return;
+    }
+
+    student *current = head;
+    while (current != NULL) {
+        if (!current->exist) {
+            printf("The student exists. Do you want to delete? [y/n]: ");
+        } else {
+            printf("The student is deleted. Recover? [y/n]: ");
+        }
+
+        char choice;
+        do {
+            choice = getchar();
+        } while (choice == '\n');
+
+        if ((choice == 'y' || choice == 'Y') && current->exist) {
+            current->exist = 1;  // Mark as recovered
+            printf("the existing flag is edited successfully!\n");
+            break;
+        } else if ((choice == 'y' || choice == 'Y') && !current->exist) {
+            current->exist = 0;  // Mark as deleted
+            printf("the existing flag is edited successfully!\n");
+            break;
+        } else {
+            printf("Please enter a valid choice.\n");
+        }
+        current = current->next;
+    }
+}
+
