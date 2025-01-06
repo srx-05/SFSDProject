@@ -3,17 +3,17 @@
 
 
 
-void addstudent(FILE *file, student *head);
+void addStudent(FILE *file, student *²head);
 
-bool SearchStudent(const char *FILENAME, int *position);
+bool searchStudent(const char *FILENAME, int *position);
 
 void modifyStudent(student *head, const char *filename, int id);
 
-void LogicalDelet(student *head, int id);
+void logicalDelet(student *head, int id);
 
-void DisplaybyClass(const char *filename); //Displays all students of a given class by their average in a decreasing order 
+void displayByClass(student *head); //Displays all students of a given class by their average in a decreasing order 
 
-void PhysicalDelet(const char *filename);
+void physicalDelet(const char *filename);
 
 
 #endif

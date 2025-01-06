@@ -1,23 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 
 // Définition des structures
-typedef struct {
-    char module[20];
-    int coef;
+typedef struct Subject {
+    char subj[10];
     float note;
-} Sub;
+    int coeff;
+} Subject;
 
 typedef struct Student {
     int id;
-    char name[50];
-    char fname[50];
-    int birth;
-    int group;
-    Sub notes[4];
+    char familyName[50];
+    char firstName[50];
+    int yearOfBirth;
+    char Class[3];
+    Subject subjects[4];
     float avg;
-    bool exist;
+    int exist;
     struct Student* next;
 } Student;
 
@@ -39,18 +40,31 @@ Student* FileToList(const char* filename) {
             break;
         }
 
-        if (fscanf(file, "%d %s %s %d %d", &newStudent->id, newStudent->name, newStudent->fname,
-                   &newStudent->birth, &newStudent->group) != 5) {
-            free(newStudent);
+        // Lire les données selon le format correct
+        int readItems = fscanf(file,
+                               "%d %49s %49s %d %2s "
+                               "%9s %f %d "
+                               "%9s %f %d "
+                               "%9s %f %d "
+                               "%9s %f %d "
+                               "%f %d",
+                               &newStudent->id, newStudent->familyName, newStudent->firstName, &newStudent->yearOfBirth, newStudent->Class,
+                               newStudent->subjects[0].subj, &newStudent->subjects[0].note, &newStudent->subjects[0].coeff,
+                               newStudent->subjects[1].subj, &newStudent->subjects[1].note, &newStudent->subjects[1].coeff,
+                               newStudent->subjects[2].subj, &newStudent->subjects[2].note, &newStudent->subjects[2].coeff,
+                               newStudent->subjects[3].subj, &newStudent->subjects[3].note, &newStudent->subjects[3].coeff,
+                               &newStudent->avg, &newStudent->exist);
+
+        if (readItems == EOF) {
+            free(newStudent); // Libérer l'allocation inutilisée
             break;
         }
 
-        for (int i = 0; i < 4; i++) {
-            fscanf(file, "%s %d %f", newStudent->notes[i].module, &newStudent->notes[i].coef,
-                   &newStudent->notes[i].note);
+        if (readItems != 19) {
+            fprintf(stderr, "Erreur de lecture des données d'un étudiant. Entrées lues : %d\n", readItems);
+            free(newStudent);
+            continue;
         }
-
-        fscanf(file, "%f %d", &newStudent->avg, (int*)&newStudent->exist);
 
         newStudent->next = NULL;
 
@@ -74,18 +88,17 @@ void ListToFile(const char* filename, Student* head) {
         return;
     }
 
-    Student* current = head;
-    while (current) {
-        if (current->exist) {
-            fprintf(file, "%d %s %s %d %d ", current->id, current->name, current->fname,
-                    current->birth, current->group);
+    for (Student* current = head; current; current = current->next) {
+        if (current->exist == 0) { // Garder seulement les étudiants où exist == 0
+            fprintf(file, "%d %s %s %d %s ",
+                    current->id, current->familyName, current->firstName,
+                    current->yearOfBirth, current->Class);
             for (int i = 0; i < 4; i++) {
-                fprintf(file, "%s %d %.2f ", current->notes[i].module,
-                        current->notes[i].coef, current->notes[i].note);
+                fprintf(file, "%s %.2f %d ",
+                        current->subjects[i].subj, current->subjects[i].note, current->subjects[i].coeff);
             }
             fprintf(file, "%.2f %d\n", current->avg, current->exist);
         }
-        current = current->next;
     }
 
     fclose(file);
@@ -105,7 +118,7 @@ void freeStudentList(Student* head) {
 void physicalDeletion(const char* filename) {
     Student* studentList = FileToList(filename);
     if (!studentList) {
-        printf("Erreur lors du chargement des étudiants.\n");
+        fprintf(stderr, "Erreur lors du chargement des etudiants depuis le fichier : %s\n", filename);
         return;
     }
 
@@ -116,10 +129,17 @@ void physicalDeletion(const char* filename) {
 
 // Fonction principale
 int main() {
-    const char* filename = "students.txt";
+    const char* filename = "camarche.txt";
 
+    printf("Chargement des etudiants...\n");
+    Student* studentList = FileToList(filename);
+    if (studentList) {
+        freeStudentList(studentList);
+    }
+
+    printf("Suppression physique...\n");
     physicalDeletion(filename);
 
-    printf("Suppression physique effectuée avec succès.\n");
+    printf("Suppression physique effectuee avec succes.\n");
     return 0;
 }
