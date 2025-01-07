@@ -223,7 +223,8 @@ void modifyStudent(node **head, const char *filename, int id) {
     } while (choice != 0);
 }
 
-// Fonction de suppression physiquevoid physicalDeletion(const char* filename) {
+// Fonction de suppression physique
+void physicalDeletion(const char* filename) {
     Student* studentList = FileToList(filename);    if (!studentList) {
         fprintf(stderr, "Erreur lors du chargement des étudiants depuis le fichier : %s\n", filename);        return;
     }
