@@ -1,5 +1,12 @@
-#include <stdio.h>
-#include "handlelist.h"
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<stdbool.h>
+#include<time.h>
+#include<ctype.h>
+#include"handlelist.h"
+#include"functions.h"
+#include"tools.h"
 
 
 

@@ -1,9 +1,12 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
+#include<stdbool.h>
 #include<time.h>
-#include<tools.h>
+#include<ctype.h>
+#include"handlelist.h"
 #include"functions.h"
-#include"handllist.h"
+#include"tools.h"
 
 //file weekly update function
 void  update(const char *studentfile,const char *updatefile){
