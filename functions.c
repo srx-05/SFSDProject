@@ -223,37 +223,39 @@ void modifyStudent(node **head, const char *filename, int id) {
     } while (choice != 0);
 }
 
-void physicalDelete(const char* filename) {
-    Student* studentList = FileToList(filename);    
+// Fonction de suppression physique
+void physicalDeletion(const char* filename) {
+    student* studentList = FileToList(filename);
     if (!studentList) {
         fprintf(stderr, "Erreur lors du chargement des étudiants depuis le fichier : %s\n", filename);
         return;
     }
-    // Filtrer les étudiants actifs (exist == 0)    
-    Student* filteredList = NULL;
-    Student* tail = NULL;
-    for (Student* current = studentList; current; ) {
-        Student* next = current->next;
-        if (current->exist == 0) { 
-            // Conserver uniquement les étudiants actifs
+
+    // Filtrer les étudiants actifs (exist == 0)
+    student* filteredList = NULL;
+    student* tail = NULL;
+
+    for (student* current = studentList; current; ) {
+        student* next = current->next;
+
+        if (current->exist == 0) { // Conserver uniquement les étudiants actifs
             if (!filteredList) {
                 filteredList = tail = current;
-            } else {                
+            } else {
                 tail->next = current;
-                tail = current;            
+                tail = current;
             }
-            tail->next = NULL;
-            // S'assurer que le dernier élément est bien terminé
+            tail->next = NULL; // S'assurer que le dernier élément est bien terminé
+        } else {
+            free(current); // Libérer la mémoire pour les étudiants non actifs
         }
-                 
-        else {
-            free(current); 
-            // Libérer la mémoire pour les étudiants non actifs        
-        }
+
         current = next;
     }
-    // Sauvegarder la liste filtrée dans le fichier    
-    ListToFile(filename, filteredList);
+
+    // Sauvegarder la liste filtrée dans le fichier
+    ListToFile(filteredList ,filename );
+
     // Libérer la liste filtrée
     freeStudentList(filteredList);
 }
