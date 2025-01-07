@@ -11,12 +11,16 @@
 
 int main()
 {
-    student *head_of_std_list = filetolist("students.txt");
-    if (head_of_std_list==NULL) {
-        printf("Failed to load student list from file. Starting with an empty list.\n");
+    FILE *studentFile=fopen("studentlist.txt");
+
+     if (studentFile== NULL) {
+        printf("ERROR openning the file");
+        return -1;
     }
 
-    int choice;
+    student *head_of_std_list = filetolist(studentFile);
+    int last_id=getLastID(&head_of_std_list),choice;
+ 
     
     update("updateDateFile.txt","studentlist.txt");
 
@@ -30,13 +34,7 @@ int main()
 
         switch (choice) {
             case 1 :{
-                FILE *file=fopen("studentlist.txt","r");
-                if (file == NULL) {
-                    printf("Error: Could not open studentlist.txt\n");
-                    break;
-                }
-                addStudent(file,&head_of_std_list);
-                fclose(file);
+                addStudent(&head_of_std_list,last_id);
                 break;
             } 
             case 2 :{
