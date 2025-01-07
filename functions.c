@@ -223,7 +223,7 @@ void modifyStudent(node **head, const char *filename, int id) {
     } while (choice != 0);
 }
 
-void physicalDeletion(const char* filename) {
+void physicalDelete(const char* filename) {
     Student* studentList = FileToList(filename);    
     if (!studentList) {
         fprintf(stderr, "Erreur lors du chargement des étudiants depuis le fichier : %s\n", filename);
