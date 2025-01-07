@@ -5,41 +5,45 @@
 
  
 // Function to allocate and initialize a new node 
-student *createnode(student std) { 
+student *createnode(student std) {
     student *newnode =(student *)malloc(sizeof(student));
 
-    if (!newnode) { 
-        perror("Memory allocation failed"); 
-        return NULL; 
+    if (!newnode) {
+        perror("Memory allocation failed");
+        return NULL;
     };
 
-    newnode=std;
+    *newnode=std;
     newnode->next=NULL;
 
     return newnode;
 } ;
  
 // Function to append a node to the linked list 
-void append_node(student **head,student *new_node){ 
+void append_node(student **head,student *new_node){
+    if (*head == NULL) {
+        *head = new_node;
+        return;
+    }
 
-    if (*head == NULL) { 
-        *head = new_node; 
-        return; 
-    } 
- 
-    student *temp = *head; 
-    while (temp->next != NULL) { 
-        temp = temp->next; 
+    student *temp = *head;
+    while (temp->next != NULL) {
+        temp = temp->next;
     };
 
-    temp->next = new_node; 
-}; 
+    temp->next = new_node;
+};
 
 //function to upload a file into a linked list
-student *filetolist(FILE *file) {
+student *FileToList(const char *file_name) {
     student std1;
     student *head = NULL;
-
+    FILE *file = fopen(file_name, "r");
+    if (file == NULL) {
+        perror("Error opening the file");
+        printf("Ensure that the file '%s' exists in the correct directory.\n", file_name);
+        return NULL;
+    }
     while (fscanf(file,
                   "%d %s %s %d %s "
                   "%s %f %d "
@@ -47,7 +51,7 @@ student *filetolist(FILE *file) {
                   "%s %f %d "
                   "%s %f %d "
                   "%f %d",
-                  &std1.id, std1.familyname, std1.firstname, &std1.yearofbirth, std1.classe,
+                  &std1.id, std1.familyName, std1.firstName, &std1.yearOfBirth, std1.Class,
                   std1.subjects[0].subj, &std1.subjects[0].note, &std1.subjects[0].coeff,
                   std1.subjects[1].subj, &std1.subjects[1].note, &std1.subjects[1].coeff,
                   std1.subjects[2].subj, &std1.subjects[2].note, &std1.subjects[2].coeff,
@@ -64,15 +68,22 @@ student *filetolist(FILE *file) {
     fclose(file);
     return head;
 }
-void list_to_file( *head, const char *filename) {
+
+
+
+
+
+void ListToFile(student *head, const char *filename) {
     FILE *file = fopen(filename, "w");
     if (file == NULL) {
         perror("Error opening file for writing");
         printf("Ensure that the program has write permissions for '%s'.\n", filename);
         return;
     }
-    student *current = *head;
+
+    student *current = head;  // No need to dereference head
     while (current != NULL) {
+        // Use -> to access members of the current pointer
         fprintf(file,
                 "%d %s %s %d %s "
                 "%s %.2f %d "
@@ -80,45 +91,34 @@ void list_to_file( *head, const char *filename) {
                 "%s %.2f %d "
                 "%s %.2f %d "
                 "%.2f %d\n",
-                s.id, s.familyname, s.firstname, s.yearofbirth, s.classe,
-                s.subjects[0].subj, s.subjects[0].note, s.subjects[0].coeff,
-                s.subjects[1].subj, s.subjects[1].note, s.subjects[1].coeff,
-                s.subjects[2].subj, s.subjects[2].note, s.subjects[2].coeff,
-                s.subjects[3].subj, s.subjects[3].note, s.subjects[3].coeff,
-                s.avg, s.exist);
-        current = current->next;
+                current->id, current->familyName, current->firstName, current->yearOfBirth, current->Class,
+                current->subjects[0].subj, current->subjects[0].note, current->subjects[0].coeff,
+                current->subjects[1].subj, current->subjects[1].note, current->subjects[1].coeff,
+                current->subjects[2].subj, current->subjects[2].note, current->subjects[2].coeff,
+                current->subjects[3].subj, current->subjects[3].note, current->subjects[3].coeff,
+                current->avg, current->exist);
+        current = current->next;  // Move to the next node
     }
+
     fclose(file);
     printf("List successfully written to file: %s\n", filename);
 }
 
-// Function to search for a student by matricule
-student *search_student(node *head, int id) {
-    student *current = head;
-    while (current != NULL) {
-        if (current->studentData.id == id && current->studentData.exist == 0) {
-            return current;
-        }
-        current = current->next;
-    }
-    return NULL;
-}
 
 //function to order a list of students in a decreasing order 
 student *Decreasingorderlist(student **head){
 
-    if (*head == NULL  (*head)->next == NULL) {
+      if (*head == NULL || (*head)->next == NULL) {
         printf("Nothing to sort\n");
-        return;
+        return *head;
     }
 
     student *sorted = NULL;
-    student *current = *head;
+    while (*head != NULL) {
+        student *current = *head;
+        *head = (*head)->next;
 
-    while (current != NULL) {
-        student *next = current->next;
-
-        if (sorted == NULL  current->avg > sorted->avg) {
+        if (sorted == NULL || current->avg > sorted->avg) {
             current->next = sorted;
             sorted = current;
         } else {
@@ -129,28 +129,28 @@ student *Decreasingorderlist(student **head){
             current->next = temp->next;
             temp->next = current;
         }
-
-        current = next;
     }
 
-    *head = sorted;  
+    *head = sorted;
+    return sorted;
 }
 
 void Displaylist(student *head){
     student* current=head;
 
     while ( current != NULL){
-        printf("ID:%d\nFull name:%s %s\nClass:%s\nAverage:%f\n",current->id,current->familyname,current->firstname,current->classe,current->avg);
+        printf("ID:%d\nFull name:%s %s\nClass:%s\nAverage:%.2f\n",current->id,current->familyName,current->firstName,current->Class,current->avg);
         current=current->next;
     }
 
 }
 
 
-void free_list(student *head) {
-    while (head) {
-        student *temp = head;
-        head = head->next;
+void freeStudentList(student* head) {
+    student* current = head;
+    while (current) {
+        student* temp = current;
+        current = current->next;
         free(temp);
     }
 }
