@@ -129,7 +129,7 @@ void physicalDeletion(const char* filename) {
 
 // Fonction principale
 int main() {
-    const char* filename = "camarche.txt";
+    const char* filename = "studentlist.txt";
 
     printf("Chargement des etudiants...\n");
     Student* studentList = FileToList(filename);
