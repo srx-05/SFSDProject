@@ -23,10 +23,10 @@ typedef struct student {
   
  
 // Function to allocate and initialize a new node 
-student *createnode(student std); 
+student *createnode(student std)
  
 // Function to append a node to the linked list 
-void append_node(student **head,student *new_node);
+void append_node(student **head,student *new_node)
 
 
 // Function to fill the file content into a linked list
