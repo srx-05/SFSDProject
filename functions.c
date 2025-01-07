@@ -118,7 +118,7 @@ void physicalDelet(const char *inputFile, const char *outputFile) {
 }
  
 // Function to create and add a student to the linked list
-void addStudent(student **head,int *last_id){ 
+void addStudent(student **head,int last_id){ 
 
     student newStudent;
 
@@ -163,9 +163,7 @@ void addStudent(student **head,int *last_id){
 
     // Calculate average
     newStudent.avg = calculateAverage(newStudent);
-
-    *last_id+=1;
-    newStudent.id = *last_id + 1; 
+    newStudent.id = last_id + 1; 
 
     // Add the new student to the linked list
     student *std_node=createnode(newStudent);
