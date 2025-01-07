@@ -468,6 +468,7 @@ void modifyStudent(student *student_list, const char *filename, int id) {
                     printf("Enter new grade: ");
                     scanf("%f", &newGrade);
                     current->subjects[index-1].note = newGrade;
+                    float average = calculateAverage(current)
                 } else {
                     printf("Invalid subject index.\n");
                 }
