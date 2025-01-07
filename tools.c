@@ -24,7 +24,7 @@ void  update(const char *studentfile,const char *updatefile){
     time_t lastupd;
     if (fscanf(upd,"%ld",&lastupd)!=1){
         //first run case
-        PhysicalDelet();
+        physicalDelete("studentlist.txt");
         lastupd = time(NULL);
         fprintf(upd,"%ld",lastupd);
         printf("%s updated successfully for the first time!!\n",studentfile);
@@ -37,7 +37,7 @@ void  update(const char *studentfile,const char *updatefile){
 
     //check if the difference between now and last update date is a week
     if (difftime(now,lastupd)>=7*24*60*60){
-        PhysicalDelet();
+        physicalDelete(studentfile);
         printf("%s upddated successfully!\n",studentfile);
         fclose(upd);
         upd=fopen(updatefile,"w");
@@ -48,14 +48,14 @@ void  update(const char *studentfile,const char *updatefile){
         }
         fprintf(upd,"%ld",now);
     }
-    
+
     fclose(upd);
-    fclose(f); 
+    fclose(f);
 }
 
 
 // Function to calculate a student's weighted average
-float calculateAverage(student *Student) {
+float calculateAverage(student* Student) {
     float totalScore = 0;
     int totalCoeff = 0;
 
@@ -68,12 +68,12 @@ float calculateAverage(student *Student) {
 
 //display function
 void display_student(student *s) {
-    
+
     printf("\nStudent Details:\n");
     printf("Matricule: %d\n", s->id);
-    printf("Name: %s %s\n", s->familyname, s->firstname);
-    printf("Year of Birth: %d\n", s->yearofbirth);
-    printf("Group: %s\n", s->classe);
+    printf("Name: %s %s\n", s->familyName, s->firstName);
+    printf("Year of Birth: %d\n", s->yearOfBirth);
+    printf("Group: %s\n", s->Class);
     printf("Grades:\n");
     for (int i = 0; i < 4; i++) {
         printf("The subject %4s:\n \t %.2f (Coefficient: %d)\n", s->subjects[i].subj , s->subjects[i].note, s->subjects[i].coeff);
@@ -81,3 +81,31 @@ void display_student(student *s) {
     printf("Average: %.2f\n", s->avg);
 }
 
+
+
+
+bool SearchStudentToDelete(student *head, int id) {
+    if (head == NULL) {
+        printf("The list is empty.\n");
+        return false;
+    }
+
+    student *current = head;
+    bool found = false;
+
+    // Traverse the linked list
+    while (current != NULL) {
+        if (current->id == id) { // Match found
+            found = true;
+            display_student(current);
+            break;
+        }
+        current = current->next;
+    }
+
+    if (!found) {
+        printf("Student not found.\n");
+    }
+
+    return found;
+}

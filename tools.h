@@ -6,10 +6,13 @@
 void  update(const char *studentfile,const char *updatefile);
 
 //average calculation function
-float calculateAverage(student* student);
+float calculateAverage(student* Student);
 
 //display function
 void display_student(student *s);
+
+
+bool SearchStudentToDelete(student *head, int id);
 
 
 #endif
