@@ -567,7 +567,7 @@ int main()
                 int givId;
                 printf("enter the ID of the student you want to modifie his information : \n");
                 scanf("%d",&givId);
-                modifyStudent(&head_of_std_list,"studentlist.txt",givId);
+                modifyStudent(head_of_std_list,"studentlist.txt",givId);
                 break;
             }
             case 4 :{
