@@ -503,7 +503,7 @@ void  update(const char *studentfile,const char *updatefile){
     time_t lastupd;
     if (fscanf(upd,"%ld",&lastupd)!=1){
         //first run case
-        physicalDelete("studentlist.txt");
+        physicalDeletion("studentlist.txt");
         lastupd = time(NULL);
         fprintf(upd,"%ld",lastupd);
         printf("%s updated successfully for the first time!!\n",studentfile);
@@ -516,7 +516,7 @@ void  update(const char *studentfile,const char *updatefile){
 
     //check if the difference between now and last update date is a week
     if (difftime(now,lastupd)>=7*24*60*60){
-        physicalDelete(studentfile);
+        physicalDeletion(studentfile);
         printf("%s upddated successfully!\n",studentfile);
         fclose(upd);
         upd=fopen(updatefile,"w");
@@ -638,7 +638,7 @@ int main()
                     scanf(" %c",&userupd);
                     userupd = toupper(userupd);
                     if (userupd=='Y'){
-                        physicalDelete("studentlist.txt");
+                        physicalDeletion("studentlist.txt");
                         break;
                     }
                     else if (userupd=='N')
