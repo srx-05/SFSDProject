@@ -461,13 +461,13 @@ void modifyStudent(student *student_list, const char *filename, int id) {
                 scanf("%s", current->Class);
                 break;
             case 5:
-                printf("Enter subject index (0-3): ");
+                printf("Enter subject index (1-4) \n1-SFSD\n2-OOP\n3-ANALYSIS\n4-ALGEBRA \n: ");
                 int index;
                 scanf("%d", &index);
-                if (index >= 0 && index < 4) {
+                if (index >= 1 && index <= 4) {
                     printf("Enter new grade: ");
                     scanf("%f", &newGrade);
-                    current->subjects[index].note = newGrade;
+                    current->subjects[index-1].note = newGrade;
                 } else {
                     printf("Invalid subject index.\n");
                 }
