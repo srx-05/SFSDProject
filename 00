@@ -1,0 +1,135 @@
+#include <windows.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <time.h>
+#include <ctype.h>
+
+typedef struct subject {
+    char subj[10];
+    float note;
+    int coeff;
+} subject;
+
+typedef struct student {
+    int id;
+    char familyName[50];
+    char firstName[50];
+    int yearOfBirth;
+    char Class[3];
+    subject subjects[4];
+    float avg;
+    int exist;
+    struct student *next;
+} student;
+
+// Function prototypes
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+void addStudent();
+void searchStudent();
+void modifyStudent();
+void displayStudents();
+void exitApplication();
+
+// Entry point
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd) {
+    const char CLASS_NAME[] = "StudentManagementClass";
+
+    WNDCLASS wc = {0};
+    wc.lpfnWndProc = WindowProc;
+    wc.hInstance = hInstance;
+    wc.lpszClassName = CLASS_NAME;
+
+    RegisterClass(&wc);
+
+    HWND hwnd = CreateWindowEx(
+        0,
+        CLASS_NAME,
+        "ENSTA Student Management System",
+        WS_OVERLAPPEDWINDOW,
+        CW_USEDEFAULT, CW_USEDEFAULT, 300, 250,
+        NULL,
+        NULL,
+        hInstance,
+        NULL
+    );
+
+    ShowWindow(hwnd, nShowCmd);
+    UpdateWindow(hwnd);
+
+    MSG msg;
+    while (GetMessage(&msg, NULL, 0, 0)) {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+
+    return 0;
+}
+
+// Window procedure
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+    switch (uMsg) {
+        case WM_CREATE: {
+            CreateWindow("BUTTON", "Add Student", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+                         50, 20, 200, 30, hwnd, (HMENU)1, NULL, NULL);
+            CreateWindow("BUTTON", "Search Student", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+                         50, 60, 200, 30, hwnd, (HMENU)2, NULL, NULL);
+            CreateWindow("BUTTON", "Modify Student", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+                         50, 100, 200, 30, hwnd, (HMENU)3, NULL, NULL);
+            CreateWindow("BUTTON", "Display Students", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+                         50, 140, 200, 30, hwnd, (HMENU)4, NULL, NULL);
+            CreateWindow("BUTTON", "Exit", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+                         50, 180, 200, 30, hwnd, (HMENU)5, NULL, NULL);
+            break;
+        }
+        case WM_COMMAND: {
+            switch (LOWORD(wParam)) {
+                case 1: // Add Student
+                    addStudent();
+                    break;
+                case 2: // Search Student
+                    searchStudent();
+                    break;
+                case 3: // Modify Student
+                    modifyStudent();
+                    break;
+                case 4: // Display Students
+                    displayStudents();
+                    break;
+                case 5: // Exit
+                    exitApplication();
+                    break;
+            }
+            break;
+        }
+        case WM_DESTROY:
+            PostQuitMessage(0);
+            break;
+        default:
+            return DefWindowProc(hwnd, uMsg, wParam, lParam);
+    }
+    return 0;
+}
+
+// Function to add a student
+void addStudent() {
+    MessageBox(NULL, "Add Student Functionality Not Implemented", "Info", MB_OK);
+}
+
+// Function to search for a student
+void searchStudent() {
+    MessageBox(NULL, "Search Student Functionality Not Implemented", "Info", MB_OK);
+}
+
+// Function to modify a student
+void modifyStudent() {
+    MessageBox(NULL, "Modify Student Functionality Not Implemented", "Info", MB_OK);
+}
+
+// Function to display all students
+void displayStudents() {
+    MessageBox(NULL, "Display Students Functionality Not Implemented", "Info", MB_OK);
+}
+
+// Function to exit
