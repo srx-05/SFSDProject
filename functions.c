@@ -223,31 +223,40 @@ void modifyStudent(node **head, const char *filename, int id) {
     } while (choice != 0);
 }
 
-// Fonction de suppression physique
 void physicalDeletion(const char* filename) {
-    Student* studentList = FileToList(filename);    if (!studentList) {
-        fprintf(stderr, "Erreur lors du chargement des étudiants depuis le fichier : %s\n", filename);        return;
+    Student* studentList = FileToList(filename);    
+    if (!studentList) {
+        fprintf(stderr, "Erreur lors du chargement des étudiants depuis le fichier : %s\n", filename);
+        return;
     }
-    // Filtrer les étudiants actifs (exist == 0)    Student* filteredList = NULL;
+    // Filtrer les étudiants actifs (exist == 0)    
+    Student* filteredList = NULL;
     Student* tail = NULL;
-    for (Student* current = studentList; current; ) {        Student* next = current->next;
-        if (current->exist == 0) { // Conserver uniquement les étudiants actifs
-            if (!filteredList) {                filteredList = tail = current;
-            } else {                tail->next = current;
-                tail = current;            }
-            tail->next = NULL; // S'assurer que le dernier élément est bien terminé        } else {
-            free(current); // Libérer la mémoire pour les étudiants non actifs        }
+    for (Student* current = studentList; current; ) {
+        Student* next = current->next;
+        if (current->exist == 0) { 
+            // Conserver uniquement les étudiants actifs
+            if (!filteredList) {
+                filteredList = tail = current;
+            } else {                
+                tail->next = current;
+                tail = current;            
+            }
+            tail->next = NULL;
+            // S'assurer que le dernier élément est bien terminé
+        }
+                 
+        else {
+            free(current); 
+            // Libérer la mémoire pour les étudiants non actifs        
+        }
         current = next;
     }
-    // Sauvegarder la liste filtrée dans le fichier    ListToFile(filename, filteredList);
+    // Sauvegarder la liste filtrée dans le fichier    
+    ListToFile(filename, filteredList);
     // Libérer la liste filtrée
-    freeStudentList(filteredList);}
-// Fonction pour libérer la mémoire d'une liste d'étudiants
-void freeStudentList(Student* head) {    Student* current = head;
-    while (current) {        Student* temp = current;
-        current = current->next;        free(temp);
-    }}
-
+    freeStudentList(filteredList);
+}
 
 void LogicalDeleting(student *head) {
     if (head == NULL) {
