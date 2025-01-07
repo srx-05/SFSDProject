@@ -171,61 +171,6 @@ void freeStudentList(student* head) {
     }
 }
 
-/*void addStudent(student **head,int last_id){
-
-    student newStudent;
-
-    // Input student details
-    printf("Enter the firstname and family name (use ';' to separate multiple names):\n");
-    scanf("%s %s", newStudent.firstName, newStudent.familyName);
-
-    do {
-        printf("Enter the year of birth:\n");
-        scanf("%d", &newStudent.yearOfBirth);
-    } while (newStudent.yearOfBirth < 1900 || newStudent.yearOfBirth > 2025);
-
-    printf("Enter the class of the student:\n");
-    scanf("%s", newStudent.Class);
-
-    // Input student marks
-    do {
-        printf("Enter the mark of this student in SFSD:\n");
-        scanf("%f", &newStudent.subjects[0].note);
-        printf("Enter the mark of this student in POO:\n");
-        scanf("%f", &newStudent.subjects[1].note);
-        printf("Enter the mark of this student in ANALYSIS:\n");
-        scanf("%f", &newStudent.subjects[2].note);
-        printf("Enter the mark of this student in Algebra:\n");
-        scanf("%f", &newStudent.subjects[3].note);
-    } while ((newStudent.subjects[0].note < 0 || newStudent.subjects[0].note > 20) ||
-             (newStudent.subjects[1].note < 0 || newStudent.subjects[1].note > 20) ||
-             (newStudent.subjects[2].note < 0 || newStudent.subjects[2].note > 20) ||
-             (newStudent.subjects[3].note < 0 || newStudent.subjects[3].note > 20));
-
-    newStudent.exist = true;
-
-    // Assign subject names and coefficients
-    strcpy(newStudent.subjects[0].subj, "SFSD");
-    newStudent.subjects[0].coeff = 4;
-    strcpy(newStudent.subjects[1].subj, "POO");
-    newStudent.subjects[1].coeff = 3;
-    strcpy(newStudent.subjects[2].subj, "ANMT");
-    newStudent.subjects[2].coeff = 2;
-    strcpy(newStudent.subjects[3].subj, "ALGE");
-    newStudent.subjects[3].coeff = 5;
-
-    newStudent.id = last_id + 1;
-
-    // Add the new student to the linked list
-    student *std_node=createnode(newStudent);
-    // Calculate average
-    newStudent.avg = calculateAverage(std_node);
-
-    append_node(head,std_node);
-
-    ListToFile(head,"studentlist.txt");
-
-}*/
 void addStudent(student **head, int last_id) {
     student newStudent;
 
