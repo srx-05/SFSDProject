@@ -11,51 +11,36 @@
 
 int main()
 {
-    FILE *studentFile=fopen("studentlist.txt");
+    FILE *studentFile=fopen("studentlist.txt","r");
 
      if (studentFile== NULL) {
         printf("ERROR openning the file");
         return -1;
     }
 
-    student *head_of_std_list = filetolist(studentFile);
-    int last_id=getLastID(&head_of_std_list),choice;
- 
-    
-    update("updateDateFile.txt","studentlist.txt");
+    student *head_of_std_list = FileToList("studentlist.txt");
+    int last_id=getLastID(head_of_std_list);
+
+    int choice;
+
+    update("studentlist.txt","updateDateFile.txt");
 
     do {
 
         printf("\t\tENSTA STUDENT MANAGEMENT SYSTEM\n");
-        printf(" 1-Add a new student\n 2-searching for a student\n 3-modifing a student's information\n 4-logical deletion\n 5-data extraction\n 6-reorganization (physical deletion)\n 0-exit\n");
+        printf(" 1-Add a new student\n 2-searching for a student\n 3-modifing a student's information\n 4-logical deletion\n 5-display by class\n 6-reorganization (physical deletion)\n 0-exit\n");
         printf("\tenter your choice : ");
         scanf("%d",&choice);
-
-
         switch (choice) {
             case 1 :{
                 addStudent(&head_of_std_list,last_id);
                 break;
-            } 
+            }
             case 2 :{
-                int i;
-                bool isexist=searchStudent("studentlist.txt",&i);
+                bool isexist=searchStudent("studentlist.txt");
                 if (isexist){
-                    char modf;
-                    printf("The position : %d",i);
-                    printf("do you want to modify the student's information? (Y/N)\n");
-                    do {
-                        scanf(" %c",&modf);
-                        modf = toupper(modf);
-                        if (modf=='Y'){
-                            modifyStudent(&head_of_std_list,"studentlist.txt",i);
-                            break;
-                        }
-                        else if (modf=='N')
-                            break;
-                        else
-                            printf("please answer with Y if yes, N otherwise\n");
-                    }while((modf!='Y')&&(modf!='N'));
+                    printf("Student found");
+                    break;
                 }
                 else {
                     printf("Student not found.\n");
@@ -66,18 +51,31 @@ int main()
                 int givId;
                 printf("enter the ID of the student you want to modifie his information : \n");
                 scanf("%d",&givId);
-                modifyStudent(&head_of_std_list,"studentlist.txt",givId);
+                modifyStudent(head_of_std_list,"studentlist.txt",givId);
                 break;
             }
             case 4 :{
-                int givId;
-                printf("enter the ID of the student you want to delete : \n");
-                scanf("%d",&givId);
-                logicalDelet(&head_of_std_list,givId);
+                printf("Loading students from file...\n");
+                student *head_of_std_list = FileToList("studentlist.txt");
+                if (!head_of_std_list) {
+                    printf("No students found in the file.\n");
+                    return 1;
+                }
+                printf("Students loaded successfully. Proceeding to logical deletion.\n");
+                int id;
+                printf("\nEnter id to search: ");
+                scanf("%d", &id);
+                if (SearchStudentToDelete(head_of_std_list, id)) {
+                    logicalDelete(head_of_std_list, id);
+                    printf("Saving updated list to file...\n");
+
+                }
+                ListToFile(head_of_std_list, "studentlist.txt");
+                freeStudentList(head_of_std_list);
                 break;
             }
             case 5 :{
-                displayByClass(&head_of_std_list);
+                displayByClass(head_of_std_list);
                 break;
             }
             case 6 :{
@@ -101,13 +99,17 @@ int main()
                     scanf(" %c",&userupd);
                     userupd = toupper(userupd);
                     if (userupd=='Y'){
-                        physicalDelet("studentlist.txt");
+                        printf("Physical deletion in progress ...\n");
+                        physicalDelete("studentlist.txt");
                         break;
                     }
-                    else if (userupd=='N')
+                    else if (userupd=='N') {
+                        printf("operation canceled!\n");
                         break;
-                    else
+                    }
+                    else{
                         printf("please answer with Y if yes, N otherwise\n");
+                    }
                 }while((userupd!='Y')&&(userupd!='N'));
                 fclose(updfile);
                 break;
