@@ -30,19 +30,20 @@ void append_node(student **head,student *new_node);
 
 
 // Function to fill the file content into a linked list
-student *filetolist(const char *file_name)
+student *filetolist(FILE *file)
 
 //Function to fill the file with a linked list content
-void listofile(student **head)
+void listofile(student *head)
 
 
 // Function to display list
 void Displaylist(student *head)
 
 //Funcion to order a list of students by their in a decreasing order 
-student *Decreasingorderlist(student **head)
+student *Decreasingorderlist(student *head)
 
-
+//Function to get ID of the last student in the list
+int getLastID(student *head)
 
 
 #endif

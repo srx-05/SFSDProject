@@ -36,15 +36,10 @@ void append_node(student **head,student *new_node){
 }; 
 
 //function to upload a file into a linked list
-student *filetolist(const char *file_name) {
+student *filetolist(FILE *file) {
     student std1;
     student *head = NULL;
-    FILE *file = fopen(file_name, "r");
-    if (file == NULL) {
-        perror("Error opening the file");
-        printf("Ensure that the file '%s' exists in the correct directory.\n", file_name);
-        return NULL;
-    }
+
     while (fscanf(file,
                   "%d %s %s %d %s "
                   "%s %f %d "
@@ -148,5 +143,43 @@ void Displaylist(student *head){
         printf("ID:%d\nFull name:%s %s\nClass:%s\nAverage:%f\n",current->id,current->familyname,current->firstname,current->classe,current->avg);
         current=current->next;
     }
+
+}
+
+
+
+// Fonction pour libérer la mémoire
+void freeStudentList(Student* head) {
+    Student* current = head;
+    while (current) {
+        Student* temp = current;
+        current = current->next;
+        free(temp);
+    }
+}
+
+void free_list(student *head) {
+    while (head) {
+        student *temp = head;
+        head = head->next;
+        free(temp);
+    }
+}
+
+
+int getLastID(student *head){
+
+    if (head == NULL) {
+        return -1; 
+    }
+
+    student* current = head;
+
+    while (current->next != NULL) {
+        current = current->next; // Traverse the list
+    }
+
+    return current->id;
+
 
 }

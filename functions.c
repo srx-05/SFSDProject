@@ -13,22 +13,21 @@ void displayByclass(student *head){
     bool text=false,occures=false;
     student *class_list=NULL;
 
-    
-    
     printf("Enter the class you would like to display:\n");
     scanf("%s",gvnclass);
 
-    while (student_list != NULL){
-        if (strcmp(student_list->classe,gvnclass) == 0)
+    while (head != NULL){
+        if (strcmp(head->Class,gvnclass) == 0)
          {   occures=true;
             if(!text){
                 printf("The students of the class %s:\n\n",gvnclass);
                 text=true;
             };
-            student* newnode=createnode(student_list->studentData);
+            student* newnode=createnode(*head);
             append_node(&class_list,newnode);
-            student_list=student_list->next;
+            
         }
+        head=head->next;
     };
 
 
@@ -38,8 +37,8 @@ void displayByclass(student *head){
         return;
     };
 
-    decreasingorderlist(&class_list);
-    displaylist(&class_list);
+    decreasingorderlist(class_list);
+    displaylist(class_list);
     
 };
 
@@ -119,83 +118,61 @@ void physicalDelet(const char *inputFile, const char *outputFile) {
 }
  
 // Function to create and add a student to the linked list
-void addStudent(FILE *file, student **head){ 
-    student *newStudent = (student *)malloc(sizeof(student));
+void addStudent(student **head,int *last_id){ 
 
-    if (!newStudent) {
-        perror("Memory allocation failed");
-        return;
-    }
+    student newStudent;
 
     // Input student details
     printf("Enter the firstname and family name (use ';' to separate multiple names):\n"); 
-    scanf("%s %s", newStudent->firstname, newStudent->familyname); 
+    scanf("%s %s", newStudent.firstName, newStudent.familyName); 
 
     do { 
         printf("Enter the year of birth:\n"); 
-        scanf("%d", &newStudent->yearofbirth); 
-    } while (newStudent->yearofbirth < 1900 || newStudent->yearofbirth > 2025); 
+        scanf("%d", &newStudent.yearOfBirth); 
+    } while (newStudent.yearOfBirth < 1900 || newStudent.yearOfBirth > 2025); 
 
     printf("Enter the class of the student:\n"); 
-    scanf("%s", newStudent->classe); 
+    scanf("%s", newStudent.Class); 
 
     // Input student marks
     do { 
         printf("Enter the mark of this student in SFSD:\n"); 
-        scanf("%f", &newStudent->subjects[0].note); 
+        scanf("%f", &newStudent.subjects[0].note); 
         printf("Enter the mark of this student in POO:\n"); 
-        scanf("%f", &newStudent->subjects[1].note); 
+        scanf("%f", &newStudent.subjects[1].note); 
         printf("Enter the mark of this student in ANALYSIS:\n"); 
-        scanf("%f", &newStudent->subjects[2].note); 
-        printf("Enter the mark of this student in Linear Algebra:\n"); 
-        scanf("%f", &newStudent->subjects[3].note); 
-    } while ((newStudent->subjects[0].note < 0 || newStudent->subjects[0].note > 20) ||
-             (newStudent->subjects[1].note < 0 || newStudent->subjects[1].note > 20) ||
-             (newStudent->subjects[2].note < 0 || newStudent->subjects[2].note > 20) ||
-             (newStudent->subjects[3].note < 0 || newStudent->subjects[3].note > 20));
+        scanf("%f", &newStudent.subjects[2].note); 
+        printf("Enter the mark of this student in Algebra:\n"); 
+        scanf("%f", &newStudent.subjects[3].note); 
+    } while ((newStudent.subjects[0].note < 0 || newStudent.subjects[0].note > 20) ||
+             (newStudent.subjects[1].note < 0 || newStudent.subjects[1].note > 20) ||
+             (newStudent.subjects[2].note < 0 || newStudent.subjects[2].note > 20) ||
+             (newStudent.subjects[3].note < 0 || newStudent.subjects[3].note > 20));
 
     newStudent->exist = true; 
 
     // Assign subject names and coefficients
-    strcpy(newStudent->subjects[0].subj, "SFSD");
-    newStudent->subjects[0].coeff = 4;
-    strcpy(newStudent->subjects[1].subj, "POO");
-    newStudent->subjects[1].coeff = 3;
-    strcpy(newStudent->subjects[2].subj, "ANMT");
-    newStudent->subjects[2].coeff = 2;
+    strcpy(newStudent.subjects[0].subj, "SFSD");
+    newStudent.subjects[0].coeff = 4;
+    strcpy(newStudent.subjects[1].subj, "POO");
+    newStudent.subjects[1].coeff = 3;
+    strcpy(newStudent.subjects[2].subj, "ANMT");
+    newStudent.subjects[2].coeff = 2;
     strcpy(newStudent->subjects[3].subj, "ALGE");
-    newStudent->subjects[3].coeff = 5;
+    newStudent.subjects[3].coeff = 5;
 
     // Calculate average
-    newStudent->avg = calculateAverage(newStudent);
+    newStudent.avg = calculateAverage(newStudent);
 
-    // Get last ID and assign a new ID
-    int last_id = getLastIDFromFile(file); 
-    newStudent->id = last_id + 1; 
+    *last_id+=1;
+    newStudent.id = *last_id + 1; 
 
     // Add the new student to the linked list
-    newStudent->next = *head;  
-    *head = newStudent;  
+    student *std_node=createnode(newStudent);
+    append_node(head,std_node);
 
-    // Open the file to append new student's information
-    file = fopen("Listes_Etudiants.txt", "a"); 
-    if (!file) { 
-        printf("Failed to open file for writing.\n"); 
-        return; 
-    } 
-
-    fprintf(file, "id : %d\t  family name : %s\t firstname: %s\t year of birth : %d\t class : %s\t "
-                  "mark of %s : %.2f coeff : %d\t mark of %s : %.2f coeff : %d\t "
-                  "mark of %s : %.2f coeff : %d\t mark of %s : %.2f coeff : %d\t "
-                  "Average : %.2f\t FLAG : %d\n",
-            newStudent->id, newStudent->familyname, newStudent->firstname, newStudent->yearofbirth, newStudent->classe,
-            newStudent->subjects[0].subj, newStudent->subjects[0].note, newStudent->subjects[0].coeff, 
-            newStudent->subjects[1].subj, newStudent->subjects[1].note, newStudent->subjects[1].coeff, 
-            newStudent->subjects[2].subj, newStudent->subjects[2].note, newStudent->subjects[2].coeff, 
-            newStudent->subjects[3].subj, newStudent->subjects[3].note, newStudent->subjects[3].coeff, 
-            newStudent->avg, newStudent->exist); 
-
-    fclose(file); 
+    listofile(head);
+  
 }
 
 
