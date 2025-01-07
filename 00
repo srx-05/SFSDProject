@@ -129,7 +129,4 @@ void modifyStudent() {
 
 // Function to display all students
 void displayStudents() {
-    MessageBox(NULL, "Display Students Functionality Not Implemented", "Info", MB_OK);
-}
-
-// Function to exit
+    MessageBox(NULL, "Display Students Functionality Not Implemented", "Info", MB_OK
