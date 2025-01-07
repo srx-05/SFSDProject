@@ -170,7 +170,6 @@ void freeStudentList(student* head) {
         free(temp);
     }
 }
-
 void addStudent(student **head, int last_id) {
     student newStudent;
 
@@ -473,13 +472,11 @@ bool searchStudent(const char *FILENAME, int *position) {
 
     return found;
 }
-
 void modifyStudent(student *student_list, const char *filename, int id) {
     if (!student_list) {
         printf("The student list is empty.\n");
         return;
     }
-
     // Search for the student node by ID
     student *current = student_list;
     while (current != NULL && current->id != id) {
@@ -491,7 +488,6 @@ void modifyStudent(student *student_list, const char *filename, int id) {
         return;
     }
     printf("Student with ID %d found. Starting modification.\n", id);
-
     int choice;
     float newGrade;
 
@@ -543,16 +539,13 @@ void modifyStudent(student *student_list, const char *filename, int id) {
                 printf("Invalid choice.\n");
         }
     } while (choice != 0);
-
     // Write the updated list back to the file
     ListToFile(student_list, filename);
     printf("Student list successfully updated in the file.\n");
 }
-
 void  update(const char *studentfile,const char *updatefile){
     FILE *f=fopen(studentfile,"r");
     FILE *upd=fopen(updatefile,"r+");
-
     //make usre both files exist
     if (f==NULL){
         printf("ERROR, %s doesn't exist.\n",studentfile);
@@ -563,7 +556,6 @@ void  update(const char *studentfile,const char *updatefile){
         fclose(f);
         exit(-2);
     }
-
     time_t lastupd;
     if (fscanf(upd,"%ld",&lastupd)!=1){
         //first run case
@@ -575,9 +567,7 @@ void  update(const char *studentfile,const char *updatefile){
         fclose(upd);
         return;
     }
-
     time_t now=time(NULL);
-
     //check if the difference between now and last update date is a week
     if (difftime(now,lastupd)>=7*24*60*60){
         physicalDeletion(studentfile);
@@ -591,12 +581,9 @@ void  update(const char *studentfile,const char *updatefile){
         }
         fprintf(upd,"%ld",now);
     }
-
     fclose(upd);
     fclose(f);
 }
-
-
 int main()
 {
      FILE *studentFile = fopen("studentlist.txt","r");
@@ -605,9 +592,8 @@ int main()
         printf("ERROR openning the file");
         return -1;
     }
-
-    student *head_of_std_list = FileToList(studentFile);
-    int last_id=getLastID(&head_of_std_list);
+    student *head_of_std_list = FileToList("studentlist.txt");
+    int last_id=getLastID(head_of_std_list);
 
     int choice;
 
@@ -635,7 +621,7 @@ int main()
                         scanf(" %c",&modf);
                         modf = toupper(modf);
                         if (modf=='Y'){
-                            modifyStudent(&head_of_std_list,"studentlist.txt",i);
+                            modifyStudent(head_of_std_list,"studentlist.txt",i);
                             break;
                         }
                         else if (modf=='N')
@@ -677,7 +663,7 @@ int main()
                 break;
             }
             case 5 :{
-                displayByClass(&head_of_std_list);
+                displayByClass(head_of_std_list);
                 break;
             }
             case 6 :{
@@ -721,8 +707,5 @@ int main()
                 break;
         }
     } while (choice!=0);
-
-
-
     return 0;
 }
