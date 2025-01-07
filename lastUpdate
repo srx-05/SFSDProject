@@ -330,18 +330,41 @@ void logicalDelete(student *head, int id) {
     }
 }
 
-void physicalDelete(const char* filename) {
+void physicalDeletion(const char* filename) {
     student* studentList = FileToList(filename);
     if (!studentList) {
-        fprintf(stderr, "Erreur lors du chargement des etudiants depuis le fichier : %s\n", filename);
+        fprintf(stderr, "Erreur lors du chargement des étudiants depuis le fichier : %s\n", filename);
         return;
     }
 
-    ListToFile(studentList, filename);
+    // Filtrer les étudiants actifs (exist == 0)
+    student* filteredList = NULL;
+    student* tail = NULL;
 
-    freeStudentList(studentList);
+    for (student* current = studentList; current; ) {
+        student* next = current->next;
+
+        if (current->exist == 0) { // Conserver uniquement les étudiants actifs
+            if (!filteredList) {
+                filteredList = tail = current;
+            } else {
+                tail->next = current;
+                tail = current;
+            }
+            tail->next = NULL; // S'assurer que le dernier élément est bien terminé
+        } else {
+            free(current); // Libérer la mémoire pour les étudiants non actifs
+        }
+
+        current = next;
+    }
+
+    // Sauvegarder la liste filtrée dans le fichier
+    ListToFile(filteredList ,filename );
+
+    // Libérer la liste filtrée
+    freeStudentList(filteredList);
 }
-
 bool searchStudent(const char *FILENAME, int *position) {
      FILE *file = fopen(FILENAME, "r");
     if (file == NULL) {
