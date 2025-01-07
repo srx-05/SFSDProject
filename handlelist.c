@@ -147,17 +147,6 @@ void Displaylist(student *head){
 }
 
 
-
-// Fonction pour libérer la mémoire
-void freeStudentList(Student* head) {
-    Student* current = head;
-    while (current) {
-        Student* temp = current;
-        current = current->next;
-        free(temp);
-    }
-}
-
 void free_list(student *head) {
     while (head) {
         student *temp = head;
