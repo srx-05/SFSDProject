@@ -45,5 +45,7 @@ student *Decreasingorderlist(student *head)
 //Function to get ID of the last student in the list
 int getLastID(student *head)
 
+void free_list(student *head)
+
 
 #endif
