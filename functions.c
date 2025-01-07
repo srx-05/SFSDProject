@@ -2,13 +2,15 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include <functions.h>
+#include <time.h>
+#include <ctype.h>
 #include "handlelist.h"
 #include "tools.h"
+#include "functions.h"
 
 
 
-void displayByclass(student *head){
+void displayByClass(student *head){
     char gvnclass[3];
     bool text=false,occures=false;
     student *class_list=NULL;
@@ -25,7 +27,7 @@ void displayByclass(student *head){
             };
             student* newnode=createnode(*head);
             append_node(&class_list,newnode);
-            
+
         }
         head=head->next;
     };
@@ -37,23 +39,23 @@ void displayByclass(student *head){
         return;
     };
 
-    decreasingorderlist(class_list);
-    displaylist(class_list);
-    
+    Decreasingorderlist(&class_list);
+    Displaylist(class_list);
+
 };
 
    
 
-bool SearchStudent(const char *FILENAME, int *position) {
+bool searchStudent(const char *FILENAME) {
      FILE *file = fopen(FILENAME, "r");
     if (file == NULL) {
         printf("Error opening file.\n");
         return false;
     }
-    
-    int matricule;
+
+    int id;
     printf("\nEnter Matricule to search: ");
-    scanf("%d", &matricule);
+    scanf("%d", &id);
 
     student s;
     bool found = false;
@@ -64,14 +66,14 @@ bool SearchStudent(const char *FILENAME, int *position) {
             "%9s %f %d "
             "%9s %f %d "
             "%f %d",
-            &s.id, s.familyname, s.firstname, &s.yearofbirth, s.classe,
+            &s.id, s.familyName, s.firstName, &s.yearOfBirth, s.Class,
             s.subjects[0].subj,  &s.subjects[0].note, &s.subjects[0].coeff,
             s.subjects[1].subj,  &s.subjects[1].note, &s.subjects[1].coeff,
             s.subjects[2].subj,  &s.subjects[2].note, &s.subjects[2].coeff,
             s.subjects[3].subj,  &s.subjects[3].note, &s.subjects[3].coeff,
             &s.avg, (int *)&s.exist) == 19) {
-        
-        if (s.id == matricule && s.exist == 0) {  // Make sure to use `s.exist == false`
+
+        if (s.id == id && s.exist == 0) {  // Make sure to use s.exist == false
             found = true;
             break;
         }
@@ -79,10 +81,10 @@ bool SearchStudent(const char *FILENAME, int *position) {
     fclose(file);
 
     if (!found) {
-        *position = 0;
+        
         printf("Student not found.\n");
     } else {
-        *position = matricule;
+        
         display_student(&s);
     }
 
@@ -92,38 +94,49 @@ bool SearchStudent(const char *FILENAME, int *position) {
 
  
 // Function to create and add a student to the linked list
-void addStudent(student **head,int last_id){ 
-
+void addStudent(student **head, int last_id) {
     student newStudent;
 
     // Input student details
-    printf("Enter the firstname and family name (use ';' to separate multiple names):\n"); 
-    scanf("%s %s", newStudent.firstName, newStudent.familyName); 
+    printf("Enter the first name: ");
+    scanf("%s", newStudent.firstName);
+    printf("Enter the family name: ");
+    scanf("%s", newStudent.familyName);
 
-    do { 
-        printf("Enter the year of birth:\n"); 
-        scanf("%d", &newStudent.yearOfBirth); 
-    } while (newStudent.yearOfBirth < 1900 || newStudent.yearOfBirth > 2025); 
+    // Validate year of birth
+    do {
+        printf("Enter the year of birth (1900-2025): ");
+        scanf("%d", &newStudent.yearOfBirth);
+        if (newStudent.yearOfBirth < 1900 || newStudent.yearOfBirth > 2025) {
+            printf("Invalid year. Please enter a year between 1900 and 2025.\n");
+        }
+    } while (newStudent.yearOfBirth < 1900 || newStudent.yearOfBirth > 2025);
 
-    printf("Enter the class of the student:\n"); 
-    scanf("%s", newStudent.Class); 
+    printf("Enter the class of the student : ");
+    scanf("%s", newStudent.Class);
 
-    // Input student marks
-    do { 
-        printf("Enter the mark of this student in SFSD:\n"); 
-        scanf("%f", &newStudent.subjects[0].note); 
-        printf("Enter the mark of this student in POO:\n"); 
-        scanf("%f", &newStudent.subjects[1].note); 
-        printf("Enter the mark of this student in ANALYSIS:\n"); 
-        scanf("%f", &newStudent.subjects[2].note); 
-        printf("Enter the mark of this student in Algebra:\n"); 
-        scanf("%f", &newStudent.subjects[3].note); 
-    } while ((newStudent.subjects[0].note < 0 || newStudent.subjects[0].note > 20) ||
-             (newStudent.subjects[1].note < 0 || newStudent.subjects[1].note > 20) ||
-             (newStudent.subjects[2].note < 0 || newStudent.subjects[2].note > 20) ||
-             (newStudent.subjects[3].note < 0 || newStudent.subjects[3].note > 20));
+    // Input student marks with validation
+    do {
+        printf("Enter the mark of this student in SFSD (0-20): ");
+        scanf("%f", &newStudent.subjects[0].note);
+        printf("Enter the mark of this student in POO (0-20): ");
+        scanf("%f", &newStudent.subjects[1].note);
+        printf("Enter the mark of this student in ANALYSIS (0-20): ");
+        scanf("%f", &newStudent.subjects[2].note);
+        printf("Enter the mark of this student in Algebra (0-20): ");
+        scanf("%f", &newStudent.subjects[3].note);
 
-    newStudent.exist = true; 
+        // Validate marks
+        if (newStudent.subjects[0].note < 0 || newStudent.subjects[0].note > 20 ||
+            newStudent.subjects[1].note < 0 || newStudent.subjects[1].note > 20 ||
+            newStudent.subjects[2].note < 0 || newStudent.subjects[2].note > 20 ||
+            newStudent.subjects[3].note < 0 || newStudent.subjects[3].note > 20) {
+            printf("Invalid marks. Please enter marks between 0 and 20.\n");
+        }
+    } while (newStudent.subjects[0].note < 0 || newStudent.subjects[0].note > 20 ||
+             newStudent.subjects[1].note < 0 || newStudent.subjects[1].note > 20 ||
+             newStudent.subjects[2].note < 0 || newStudent.subjects[2].note > 20 ||
+             newStudent.subjects[3].note < 0 || newStudent.subjects[3].note > 20);
 
     // Assign subject names and coefficients
     strcpy(newStudent.subjects[0].subj, "SFSD");
@@ -135,17 +148,29 @@ void addStudent(student **head,int last_id){
     strcpy(newStudent.subjects[3].subj, "ALGE");
     newStudent.subjects[3].coeff = 5;
 
-    newStudent.id = last_id + 1; 
+    // Set the student ID
+    newStudent.id = last_id + 1;
 
-    // Add the new student to the linked list
-    student *std_node=createnode(newStudent);
-    // Calculate average
-    newStudent.avg = calculateAverage(std_node);
+    // Calculate the average
+    newStudent.avg = calculateAverage(&newStudent);
 
-    append_node(head,std_node);
+    // Set the exist flag
+    newStudent.exist = 0; // 0 means the student exists (not deleted)
 
-    ListToFile(head,"studentlist.txt");
-  
+    // Create a new node for the student
+    student *std_node = createnode(newStudent);
+    if (!std_node) {
+        printf("Error: Failed to create a new student node.\n");
+        return;
+    }
+
+    // Append the new student to the linked list
+    append_node(head, std_node);
+
+    // Save the updated list to the file
+    ListToFile(*head, "studentlist.txt");
+
+    printf("Student added successfully!\n");
 }
 
 
@@ -153,22 +178,24 @@ void addStudent(student **head,int last_id){
 
 
 //modify student function
-void modifyStudent(node **head, const char *filename, int id) {
-    // Load the list from the file first
-    node *student_list = filetolist(filename);
+void modifyStudent(student *student_list, const char *filename, int id) {
     if (!student_list) {
-        printf("Error loading the student list from file.\n");
+        printf("The student list is empty.\n");
         return;
     }
-
-    // Search for the student in the list
-    node *student_node = search_student(student_list, id);
-    if (!student_node) {
-        printf("Student with ID %d not found or is deleted.\n", id);
-        return;
+    printf("modifying works");
+    // Search for the student node by ID
+    student *current = student_list;
+    while (current != NULL && current->id != id) {
+        current = current->next;
     }
 
-    student *std = &student_node->studentData;
+    if (!current) {
+        printf("Student with ID %d not found.\n", id);
+        return;
+    }
+    printf("Student with ID %d found. Starting modification.\n", id);
+
     int choice;
     float newGrade;
 
@@ -185,28 +212,30 @@ void modifyStudent(node **head, const char *filename, int id) {
         switch (choice) {
             case 1:
                 printf("New family name: ");
-                scanf("%s", std->familyname);
+                scanf("%s", current->familyName);
                 break;
             case 2:
                 printf("New first name: ");
-                scanf("%s", std->firstname);
+                scanf("%s", current->firstName);
                 break;
             case 3:
                 printf("New year of birth: ");
-                scanf("%d", &std->yearofbirth);
+                scanf("%d", &current->yearOfBirth);
                 break;
             case 4:
                 printf("New class: ");
-                scanf("%s", std->classe);
+                scanf("%s", current->Class);
                 break;
             case 5:
-                printf("Enter subject index (0-3): ");
+                printf("Enter subject index (1-4) \n1-SFSD\n2-OOP\n3-ANALYSIS\n4-ALGEBRA \n: ");
                 int index;
                 scanf("%d", &index);
-                if (index >= 0 && index < 4) {
+                if (index >= 1 && index <= 4) {
                     printf("Enter new grade: ");
                     scanf("%f", &newGrade);
-                    std->subjects[index].note = newGrade;
+                    current->subjects[index-1].note = newGrade;
+                    float average = calculateAverage(current);
+                    printf("New average: %.2f\n", average);
                 } else {
                     printf("Invalid subject index.\n");
                 }
@@ -217,15 +246,15 @@ void modifyStudent(node **head, const char *filename, int id) {
             default:
                 printf("Invalid choice.\n");
         }
-
-        // Write the updated list back to the file after modification
-        list_to_file(student_list, filename);
-
     } while (choice != 0);
+
+    // Write the updated list back to the file
+    ListToFile(student_list, filename);
+    printf("Student list successfully updated in the file.\n");
 }
 
 // Fonction de suppression physique
-void physicalDeletion(const char* filename) {
+void physicalDelete(const char* filename) {
     student* studentList = FileToList(filename);
     if (!studentList) {
         fprintf(stderr, "Erreur lors du chargement des étudiants depuis le fichier : %s\n", filename);
@@ -261,36 +290,45 @@ void physicalDeletion(const char* filename) {
     freeStudentList(filteredList);
 }
 
-void LogicalDeleting(student *head) {
+void logicalDelete(student *head, int id) {
     if (head == NULL) {
         printf("No students found in the list.\n");
         return;
     }
 
     student *current = head;
+    char choice;
     while (current != NULL) {
-        if (!current->exist) {
+        if (!current->exist && current->id == id) {
             printf("The student exists. Do you want to delete? [y/n]: ");
-        } else {
+            do {
+                choice = getchar();
+            } while (choice == '\n' || (toupper(choice) != 'Y' && toupper(choice) != 'N'));
+            if (toupper(choice) == 'Y') {
+                current->exist = 1;  // Mark as deleted
+                printf("the existing flag is edited successfully!\n");
+                break;
+            }
+            if (toupper(choice) == 'N') {
+                printf("operation canceled!\n");
+                break;
+            }
+        } else if (current->exist && current->id == id){
             printf("The student is deleted. Recover? [y/n]: ");
+            do {
+                choice = getchar();
+            } while (choice == '\n' || (toupper(choice) != 'Y' && toupper(choice) != 'N'));
+            if (toupper(choice) == 'Y') {
+                current->exist = 0;  // Mark as recovered
+                printf("the existing flag is edited successfully!\n");
+                break;
+            }
+            if (toupper(choice) == 'N') {
+                printf("operation canceled!\n");
+                break;
+            }
         }
 
-        char choice;
-        do {
-            choice = getchar();
-        } while (choice == '\n');
-
-        if ((choice == 'y' || choice == 'Y') && current->exist) {
-            current->exist = 1;  // Mark as recovered
-            printf("the existing flag is edited successfully!\n");
-            break;
-        } else if ((choice == 'y' || choice == 'Y') && !current->exist) {
-            current->exist = 0;  // Mark as deleted
-            printf("the existing flag is edited successfully!\n");
-            break;
-        } else {
-            printf("Please enter a valid choice.\n");
-        }
         current = current->next;
     }
 }
