@@ -123,7 +123,7 @@ void addStudent(student **head,int last_id){
              (newStudent.subjects[2].note < 0 || newStudent.subjects[2].note > 20) ||
              (newStudent.subjects[3].note < 0 || newStudent.subjects[3].note > 20));
 
-    newStudent->exist = true; 
+    newStudent.exist = true; 
 
     // Assign subject names and coefficients
     strcpy(newStudent.subjects[0].subj, "SFSD");
@@ -132,18 +132,19 @@ void addStudent(student **head,int last_id){
     newStudent.subjects[1].coeff = 3;
     strcpy(newStudent.subjects[2].subj, "ANMT");
     newStudent.subjects[2].coeff = 2;
-    strcpy(newStudent->subjects[3].subj, "ALGE");
+    strcpy(newStudent.subjects[3].subj, "ALGE");
     newStudent.subjects[3].coeff = 5;
 
-    // Calculate average
-    newStudent.avg = calculateAverage(newStudent);
     newStudent.id = last_id + 1; 
 
     // Add the new student to the linked list
     student *std_node=createnode(newStudent);
+    // Calculate average
+    newStudent.avg = calculateAverage(std_node);
+
     append_node(head,std_node);
 
-    listofile(head);
+    ListToFile(head,"studentlist.txt");
   
 }
 
