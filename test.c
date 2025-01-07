@@ -426,48 +426,27 @@ void physicalDeletion(const char* filename) {
     // Libérer la liste filtrée
     freeStudentList(filteredList);
 }
-bool searchStudent(const char *FILENAME, int *position) {
-     FILE *file = fopen(FILENAME, "r");
-    if (file == NULL) {
-        printf("Error opening file.\n");
+bool SearchStudentToDelete(student *head, int id) {
+    if (head == NULL) {
+        printf("The list is empty.\n");
         return false;
     }
 
-    int id;
-    printf("\nEnter Matricule to search: ");
-    scanf("%d", &id);
-
-
-
-    student s;
+    student *current = head;
     bool found = false;
-    while (fscanf(file,
-            "%d %49s %49s %d %2s "
-            "%9s %f %d "
-            "%9s %f %d "
-            "%9s %f %d "
-            "%9s %f %d "
-            "%f %d",
-            &s.id, s.familyName, s.firstName, &s.yearOfBirth, s.Class,
-            s.subjects[0].subj,  &s.subjects[0].note, &s.subjects[0].coeff,
-            s.subjects[1].subj,  &s.subjects[1].note, &s.subjects[1].coeff,
-            s.subjects[2].subj,  &s.subjects[2].note, &s.subjects[2].coeff,
-            s.subjects[3].subj,  &s.subjects[3].note, &s.subjects[3].coeff,
-            &s.avg, (int *)&s.exist) == 19) {
 
-        if (s.id == id && s.exist == 0) {  // Make sure to use s.exist == false
+    // Traverse the linked list
+    while (current != NULL) {
+        if (current->id == id) { // Match found
             found = true;
+            display_student(current);
             break;
         }
+        current = current->next;
     }
-    fclose(file);
 
     if (!found) {
-        *position = 0;
         printf("Student not found.\n");
-    } else {
-        *position = id;
-        display_student(&s);
     }
 
     return found;
@@ -611,24 +590,10 @@ int main()
                 break;
             }
             case 2 :{
-                int i;
-                bool isexist=searchStudent("studentlist.txt",&i);
+                bool isexist=searchStudent("studentlist.txt");
                 if (isexist){
-                    char modf;
-                    printf("The position : %d",i);
-                    printf("do you want to modify the student's information? (Y/N)\n");
-                    do {
-                        scanf(" %c",&modf);
-                        modf = toupper(modf);
-                        if (modf=='Y'){
-                            modifyStudent(head_of_std_list,"studentlist.txt",i);
-                            break;
-                        }
-                        else if (modf=='N')
-                            break;
-                        else
-                            printf("please answer with Y if yes, N otherwise\n");
-                    }while((modf!='Y')&&(modf!='N'));
+                    printf("Student found");
+                    break;
                 }
                 else {
                     printf("Student not found.\n");
