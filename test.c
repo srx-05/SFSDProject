@@ -121,19 +121,20 @@ void ListToFile(student *head, const char *filename) {
 // Function to calculate a student's weighted average
 float calculateAverage(student* Student) {
     float totalScore = 0;
+    int totalCoeff = 0;
 
     for (int i = 0; i < 4; i++) {
-        totalScore += (Student->subjects[i].note) * (Student->subjects[i].coeff);
-
+        totalScore += Student->subjects[i].note * Student->subjects[i].coeff;
+        totalCoeff += Student->subjects[i].coeff;
     }
-    return totalScore / 14;
+    return totalScore / totalCoeff;
 }
 
 // Function to find the last ID from the file
 int getLastID(student *head){
 
     if (head == NULL) {
-        return -1;
+        return -1; 
     }
 
     student* current = head;
@@ -170,6 +171,7 @@ void freeStudentList(student* head) {
         free(temp);
     }
 }
+
 void addStudent(student **head, int last_id) {
     student newStudent;
 
@@ -188,7 +190,7 @@ void addStudent(student **head, int last_id) {
         }
     } while (newStudent.yearOfBirth < 1900 || newStudent.yearOfBirth > 2025);
 
-    printf("Enter the class of the student (e.g., 1A, 2B): ");
+    printf("Enter the class of the student : ");
     scanf("%s", newStudent.Class);
 
     // Input student marks with validation
@@ -248,79 +250,6 @@ void addStudent(student **head, int last_id) {
 
     printf("Student added successfully!\n");
 }
-//function to order a list of students in a decreasing order
-student *Decreasingorderlist(student **head){
-
-      if (*head == NULL || (*head)->next == NULL) {
-        printf("Nothing to sort\n");
-        return *head;
-    }
-
-    student *sorted = NULL;
-    while (*head != NULL) {
-        student *current = *head;
-        *head = (*head)->next;
-
-        if (sorted == NULL || current->avg > sorted->avg) {
-            current->next = sorted;
-            sorted = current;
-        } else {
-            student *temp = sorted;
-            while (temp->next != NULL && temp->next->avg >= current->avg) {
-                temp = temp->next;
-            }
-            current->next = temp->next;
-            temp->next = current;
-        }
-    }
-
-    *head = sorted;
-    return sorted;
-}
-
-void Displaylist(student *head){
-    student* current=head;
-
-    while ( current != NULL){
-        printf("ID:%d\nFull name:%s %s\nClass:%s\nAverage:%f\n",current->id,current->familyName,current->firstName,current->Class,current->avg);
-        current=current->next;
-    }
-
-}
-void displayByClass(student *head){
-    char gvnclass[3];
-    bool text=false,occures=false;
-    student *class_list=NULL;
-
-    printf("Enter the class you would like to display:\n");
-    scanf("%s",gvnclass);
-
-    while (head != NULL){
-        if (strcmp(head->Class,gvnclass) == 0)
-         {   occures=true;
-            if(!text){
-                printf("The students of the class %s:\n\n",gvnclass);
-                text=true;
-            };
-            student* newnode=createnode(*head);
-            append_node(&class_list,newnode);
-
-        }
-        head=head->next;
-    };
-
-
-    if (!occures)
-    {
-        printf("Class is empty or misspelled, check again!");
-        return;
-    };
-
-    Decreasingorderlist(&class_list);
-    Displaylist(class_list);
-
-};
-
 
 bool SearchStudentToDelete(student *head, int id) {
     if (head == NULL) {
@@ -391,7 +320,7 @@ void logicalDelete(student *head, int id) {
     }
 }
 
-void physicalDeletion(const char* filename) {
+void physicalDelete(const char* filename) {
     student* studentList = FileToList(filename);
     if (!studentList) {
         fprintf(stderr, "Erreur lors du chargement des étudiants depuis le fichier : %s\n", filename);
@@ -426,36 +355,59 @@ void physicalDeletion(const char* filename) {
     // Libérer la liste filtrée
     freeStudentList(filteredList);
 }
-bool SearchStudentToDelete(student *head, int id) {
-    if (head == NULL) {
-        printf("The list is empty.\n");
+
+
+bool searchStudent(const char *FILENAME) {
+     FILE *file = fopen(FILENAME, "r");
+    if (file == NULL) {
+        printf("Error opening file.\n");
         return false;
     }
 
-    student *current = head;
-    bool found = false;
+    int id;
+    printf("\nEnter Matricule to search: ");
+    scanf("%d", &id);
 
-    // Traverse the linked list
-    while (current != NULL) {
-        if (current->id == id) { // Match found
+    student s;
+    bool found = false;
+    while (fscanf(file,
+            "%d %49s %49s %d %2s "
+            "%9s %f %d "
+            "%9s %f %d "
+            "%9s %f %d "
+            "%9s %f %d "
+            "%f %d",
+            &s.id, s.familyName, s.firstName, &s.yearOfBirth, s.Class,
+            s.subjects[0].subj,  &s.subjects[0].note, &s.subjects[0].coeff,
+            s.subjects[1].subj,  &s.subjects[1].note, &s.subjects[1].coeff,
+            s.subjects[2].subj,  &s.subjects[2].note, &s.subjects[2].coeff,
+            s.subjects[3].subj,  &s.subjects[3].note, &s.subjects[3].coeff,
+            &s.avg, (int *)&s.exist) == 19) {
+
+        if (s.id == id && s.exist == 0) {  // Make sure to use s.exist == false
             found = true;
-            display_student(current);
             break;
         }
-        current = current->next;
     }
+    fclose(file);
 
     if (!found) {
+        
         printf("Student not found.\n");
+    } else {
+        
+        display_student(&s);
     }
 
     return found;
 }
+
 void modifyStudent(student *student_list, const char *filename, int id) {
     if (!student_list) {
         printf("The student list is empty.\n");
         return;
     }
+    printf("modifying works");
     // Search for the student node by ID
     student *current = student_list;
     while (current != NULL && current->id != id) {
@@ -467,6 +419,7 @@ void modifyStudent(student *student_list, const char *filename, int id) {
         return;
     }
     printf("Student with ID %d found. Starting modification.\n", id);
+
     int choice;
     float newGrade;
 
@@ -518,13 +471,16 @@ void modifyStudent(student *student_list, const char *filename, int id) {
                 printf("Invalid choice.\n");
         }
     } while (choice != 0);
+
     // Write the updated list back to the file
     ListToFile(student_list, filename);
     printf("Student list successfully updated in the file.\n");
 }
+
 void  update(const char *studentfile,const char *updatefile){
     FILE *f=fopen(studentfile,"r");
     FILE *upd=fopen(updatefile,"r+");
+
     //make usre both files exist
     if (f==NULL){
         printf("ERROR, %s doesn't exist.\n",studentfile);
@@ -535,10 +491,11 @@ void  update(const char *studentfile,const char *updatefile){
         fclose(f);
         exit(-2);
     }
+
     time_t lastupd;
     if (fscanf(upd,"%ld",&lastupd)!=1){
         //first run case
-        physicalDeletion("studentlist.txt");
+        physicalDelete("studentlist.txt");
         lastupd = time(NULL);
         fprintf(upd,"%ld",lastupd);
         printf("%s updated successfully for the first time!!\n",studentfile);
@@ -546,10 +503,12 @@ void  update(const char *studentfile,const char *updatefile){
         fclose(upd);
         return;
     }
+
     time_t now=time(NULL);
+
     //check if the difference between now and last update date is a week
     if (difftime(now,lastupd)>=7*24*60*60){
-        physicalDeletion(studentfile);
+        physicalDelete(studentfile);
         printf("%s upddated successfully!\n",studentfile);
         fclose(upd);
         upd=fopen(updatefile,"w");
@@ -560,17 +519,99 @@ void  update(const char *studentfile,const char *updatefile){
         }
         fprintf(upd,"%ld",now);
     }
+
     fclose(upd);
     fclose(f);
 }
+
+
+
+student *Decreasingorderlist(student **head){
+
+      if (*head == NULL || (*head)->next == NULL) {
+        printf("Nothing to sort\n");
+        return *head;
+    }
+
+    student *sorted = NULL;
+    while (*head != NULL) {
+        student *current = *head;
+        *head = (*head)->next;
+
+        if (sorted == NULL || current->avg > sorted->avg) {
+            current->next = sorted;
+            sorted = current;
+        } else {
+            student *temp = sorted;
+            while (temp->next != NULL && temp->next->avg >= current->avg) {
+                temp = temp->next;
+            }
+            current->next = temp->next;
+            temp->next = current;
+        }
+    }
+
+    *head = sorted;
+    return sorted;
+}
+
+void Displaylist(student *head){
+    student* current=head;
+
+    while ( current != NULL){
+        printf("ID:%d\nFull name:%s %s\nClass:%s\nAverage:%.2f\n",current->id,current->familyName,current->firstName,current->Class,current->avg);
+        current=current->next;
+    }
+
+}
+
+
+
+
+void displayByClass(student *head){
+    char gvnclass[3];
+    bool text=false,occures=false;
+    student *class_list=NULL;
+
+    printf("Enter the class you would like to display:\n");
+    scanf("%s",gvnclass);
+
+    while (head != NULL){
+        if (strcmp(head->Class,gvnclass) == 0)
+         {   occures=true;
+            if(!text){
+                printf("The students of the class %s:\n\n",gvnclass);
+                text=true;
+            };
+            student* newnode=createnode(*head);
+            append_node(&class_list,newnode);
+
+        }
+        head=head->next;
+    };
+
+
+    if (!occures)
+    {
+        printf("Class is empty or misspelled, check again!");
+        return;
+    };
+
+    Decreasingorderlist(&class_list);
+    Displaylist(class_list);
+
+};
+
+
 int main()
 {
-     FILE *studentFile = fopen("studentlist.txt","r");
+    FILE *studentFile=fopen("studentlist.txt","r");
 
      if (studentFile== NULL) {
         printf("ERROR openning the file");
         return -1;
     }
+
     student *head_of_std_list = FileToList("studentlist.txt");
     int last_id=getLastID(head_of_std_list);
 
@@ -652,13 +693,17 @@ int main()
                     scanf(" %c",&userupd);
                     userupd = toupper(userupd);
                     if (userupd=='Y'){
-                        physicalDeletion("studentlist.txt");
+                        printf("Physical deletion in progress ...\n");
+                        physicalDelete("studentlist.txt");
                         break;
                     }
-                    else if (userupd=='N')
+                    else if (userupd=='N') {
+                        printf("operation canceled!\n");
                         break;
-                    else
+                    }
+                    else{
                         printf("please answer with Y if yes, N otherwise\n");
+                    }
                 }while((userupd!='Y')&&(userupd!='N'));
                 fclose(updfile);
                 break;
@@ -672,5 +717,8 @@ int main()
                 break;
         }
     } while (choice!=0);
+
+
+
     return 0;
 }
