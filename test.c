@@ -622,7 +622,7 @@ int main()
     do {
 
         printf("\t\tENSTA STUDENT MANAGEMENT SYSTEM\n");
-        printf(" 1-Add a new student\n 2-searching for a student\n 3-modifing a student's information\n 4-logical deletion\n 5-data extraction\n 6-reorganization (physical deletion)\n 0-exit\n");
+        printf(" 1-Add a new student\n 2-searching for a student\n 3-modifing a student's information\n 4-logical deletion\n 5-display by class\n 6-reorganization (physical deletion)\n 0-exit\n");
         printf("\tenter your choice : ");
         scanf("%d",&choice);
         switch (choice) {
