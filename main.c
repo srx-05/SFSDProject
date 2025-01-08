@@ -629,7 +629,7 @@ int main()
     student *head_of_std_list = FileToList("studentlist.txt");
     int last_id=getLastID(head_of_std_list);
 
-    int choice;
+    char choice;
 
     update("studentlist.txt","updateDateFile.txt");
 
@@ -638,13 +638,13 @@ int main()
         printf("\t\tENSTA STUDENT MANAGEMENT SYSTEM\n");
         printf(" 1-Add a new student\n 2-searching for a student\n 3-modifing a student's information\n 4-logical deletion\n 5-display by class\n 6-reorganization (physical deletion)\n 0-exit\n");
         printf("\tenter your choice : ");
-        scanf("%d",&choice);
+        scanf("%c",&choice);
         switch (choice) {
-            case 1 :{
+            case '1' :{
                 addStudent(&head_of_std_list,last_id);
                 break;
             }
-            case 2 :{
+            case '2' :{
                 bool isexist=searchStudent("studentlist.txt");
                 if (isexist){
                     printf("Student found");
@@ -655,14 +655,14 @@ int main()
                     break;
                 }
             }
-            case 3 :{
+            case '3' :{
                 int givId;
                 printf("enter the ID of the student you want to modifie his information : \n");
                 scanf("%d",&givId);
                 modifyStudent(head_of_std_list,"studentlist.txt",givId);
                 break;
             }
-            case 4 :{
+            case '4' :{
                 printf("Loading students from file...\n");
                 student *head_of_std_list = FileToList("studentlist.txt");
                 if (!head_of_std_list) {
@@ -682,11 +682,11 @@ int main()
                 freeStudentList(head_of_std_list);
                 break;
             }
-            case 5 :{
+            case '5' :{
                 displayByClass(head_of_std_list);
                 break;
             }
-            case 6 :{
+            case '6' :{
                 FILE *updfile=fopen("updateDateFile.txt","r");
                 if (updfile==NULL){
                     printf("ERROR, the update file can't be opened.\n");
@@ -722,15 +722,14 @@ int main()
                 fclose(updfile);
                 break;
             }
-            case 0 :{
+            case '0' :{
                 printf("Exiting the system.\n");
                 break;
             }
             default:
                 printf("Invalid option, please try again.\n");
-                break;
         }
-    } while (choice!=0);
+    } while (choice != '0');
 
 
 
