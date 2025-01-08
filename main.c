@@ -264,38 +264,20 @@ void addStudent(student **head, int last_id) {
     scanf("%s", newStudent.Class);
 
     // Input student marks with validation
+ // Input student marks
     do {
-        printf("Enter the mark of this student in SFSD (0-20): \n");
+        printf("Enter the mark of this student in SFSD:\n");
         scanf("%f", &newStudent.subjects[0].note);
-        
-         if (newStudent.subjects[0].note < 0 || newStudent.subjects[0].note > 20)
-              printf("Invalid marks. Please enter marks between 0 and 20.\n");
-             
-    }while(newStudent.subjects[0].note < 0 || newStudent.subjects[0].note > 20);
-
-   do{
-       printf("Enter the mark of this student in POO (0-20): \n");
+        printf("Enter the mark of this student in POO:\n");
         scanf("%f", &newStudent.subjects[1].note);
-       if(newStudent.subjects[1].note < 0 || newStudent.subjects[1].note > 20)
-           printf("Invalid marks. Please enter marks between 0 and 20.\n");
-           
-   }while(newStudent.subjects[1].note < 0 || newStudent.subjects[1].note > 20);
-
-do{
-    printf("Enter the mark of this student in ANALYSIS (0-20): \n");
+        printf("Enter the mark of this student in ANALYSIS:\n");
         scanf("%f", &newStudent.subjects[2].note);
-    if(newStudent.subjects[2].note < 0 || newStudent.subjects[2].note > 20)
-        printf("Invalid marks. Please enter marks between 0 and 20.\n");
-        
-}while(newStudent.subjects[2].note < 0 || newStudent.subjects[2].note > 20);
-
-do{
-    printf("Enter the mark of this student in Algebra (0-20): \n");
+        printf("Enter the mark of this student in Linear Algebra:\n");
         scanf("%f", &newStudent.subjects[3].note);
-    if (newStudent.subjects[3].note < 0 || newStudent.subjects[3].note > 20)
-        printf("Invalid marks. Please enter marks between 0 and 20.\n");
-        
-}while(newStudent.subjects[3].note < 0 || newStudent.subjects[3].note > 20);
+    } while (((newStudent.subjects[0].note < 0) || (newStudent.subjects[0].note > 20)) ||
+             ((newStudent.subjects[1].note < 0) || (newStudent.subjects[1].note > 20)) ||
+             ((newStudent.subjects[2].note < 0) || (newStudent.subjects[2].note > 20)) ||
+             ((newStudent.subjects[3].note < 0) || (newStudent.subjects[3].note > 20)));
 
     // Assign subject names and coefficients
     strcpy(newStudent.subjects[0].subj, "SFSD");
