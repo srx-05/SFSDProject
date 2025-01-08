@@ -5,6 +5,8 @@
 #include <time.h>
 #include <ctype.h>
 
+
+////////////////////////////////////////////////////////SUB FUNCTIONS DECLARATION/////////////////////////////////////////////////////////////////////
 typedef struct subject {
     char subj[10];
     float note;
@@ -172,6 +174,74 @@ void freeStudentList(student* head) {
     }
 }
 
+bool SearchStudentToDelete(student *head, int id) {
+    if (head == NULL) {
+        printf("The list is empty.\n");
+        return false;
+    }
+
+    student *current = head;
+    bool found = false;
+
+    // Traverse the linked list
+    while (current != NULL) {
+        if (current->id == id) { // Match found
+            found = true;
+            display_student(current);
+            break;
+        }
+        current = current->next;
+    }
+
+    if (!found) {
+        printf("Student not found.\n");
+    }
+
+    return found;
+}
+
+student *Decreasingorderlist(student **head){
+
+      if (*head == NULL || (*head)->next == NULL) {
+        printf("Nothing to sort\n");
+        return *head;
+    }
+
+    student *sorted = NULL;
+    while (*head != NULL) {
+        student *current = *head;
+        *head = (*head)->next;
+
+        if (sorted == NULL || current->avg > sorted->avg) {
+            current->next = sorted;
+            sorted = current;
+        } else {
+            student *temp = sorted;
+            while (temp->next != NULL && temp->next->avg >= current->avg) {
+                temp = temp->next;
+            }
+            current->next = temp->next;
+            temp->next = current;
+        }
+    }
+
+    *head = sorted;
+    return sorted;
+}
+
+void Displaylist(student *head){
+    student* current=head;
+
+    while ( current != NULL){
+        printf("ID:%d\nFull name:%s %s\nClass:%s\nAverage:%.2f\n",current->id,current->familyName,current->firstName,current->Class,current->avg);
+        current=current->next;
+    }
+
+}
+
+
+
+//////////////////////MAIN FUNCTIONS DEFINITIONS///////////////////////////////////////////////////////////////////////////////////////////////////////
 void addStudent(student **head, int last_id) {
     student newStudent;
 
@@ -195,26 +265,37 @@ void addStudent(student **head, int last_id) {
 
     // Input student marks with validation
     do {
-        printf("Enter the mark of this student in SFSD (0-20): ");
+        printf("Enter the mark of this student in SFSD (0-20): \n");
         scanf("%f", &newStudent.subjects[0].note);
-        printf("Enter the mark of this student in POO (0-20): ");
-        scanf("%f", &newStudent.subjects[1].note);
-        printf("Enter the mark of this student in ANALYSIS (0-20): ");
-        scanf("%f", &newStudent.subjects[2].note);
-        printf("Enter the mark of this student in Algebra (0-20): ");
-        scanf("%f", &newStudent.subjects[3].note);
+        
+         if (newStudent.subjects[0].note < 0 || newStudent.subjects[0].note > 20)
+              printf("Invalid marks. Please enter marks between 0 and 20.\n");
+             
+    }while(newStudent.subjects[0].note < 0 || newStudent.subjects[0].note > 20);
 
-        // Validate marks
-        if (newStudent.subjects[0].note < 0 || newStudent.subjects[0].note > 20 ||
-            newStudent.subjects[1].note < 0 || newStudent.subjects[1].note > 20 ||
-            newStudent.subjects[2].note < 0 || newStudent.subjects[2].note > 20 ||
-            newStudent.subjects[3].note < 0 || newStudent.subjects[3].note > 20) {
-            printf("Invalid marks. Please enter marks between 0 and 20.\n");
-        }
-    } while (newStudent.subjects[0].note < 0 || newStudent.subjects[0].note > 20 ||
-             newStudent.subjects[1].note < 0 || newStudent.subjects[1].note > 20 ||
-             newStudent.subjects[2].note < 0 || newStudent.subjects[2].note > 20 ||
-             newStudent.subjects[3].note < 0 || newStudent.subjects[3].note > 20);
+   do{
+       printf("Enter the mark of this student in POO (0-20): \n");
+        scanf("%f", &newStudent.subjects[1].note);
+       if(newStudent.subjects[1].note < 0 || newStudent.subjects[1].note > 20)
+           printf("Invalid marks. Please enter marks between 0 and 20.\n");
+           
+   }while(newStudent.subjects[1].note < 0 || newStudent.subjects[1].note > 20);
+
+do{
+    printf("Enter the mark of this student in ANALYSIS (0-20): \n");
+        scanf("%f", &newStudent.subjects[2].note);
+    if(newStudent.subjects[2].note < 0 || newStudent.subjects[2].note > 20)
+        printf("Invalid marks. Please enter marks between 0 and 20.\n");
+        
+}while(newStudent.subjects[2].note < 0 || newStudent.subjects[2].note > 20);
+
+do{
+    printf("Enter the mark of this student in Algebra (0-20): \n");
+        scanf("%f", &newStudent.subjects[3].note);
+    if (newStudent.subjects[3].note < 0 || newStudent.subjects[3].note > 20)
+        printf("Invalid marks. Please enter marks between 0 and 20.\n");
+        
+}while(newStudent.subjects[3].note < 0 || newStudent.subjects[3].note > 20);
 
     // Assign subject names and coefficients
     strcpy(newStudent.subjects[0].subj, "SFSD");
@@ -251,31 +332,7 @@ void addStudent(student **head, int last_id) {
     printf("Student added successfully!\n");
 }
 
-bool SearchStudentToDelete(student *head, int id) {
-    if (head == NULL) {
-        printf("The list is empty.\n");
-        return false;
-    }
 
-    student *current = head;
-    bool found = false;
-
-    // Traverse the linked list
-    while (current != NULL) {
-        if (current->id == id) { // Match found
-            found = true;
-            display_student(current);
-            break;
-        }
-        current = current->next;
-    }
-
-    if (!found) {
-        printf("Student not found.\n");
-    }
-
-    return found;
-}
 
 void logicalDelete(student *head, int id) {
     if (head == NULL) {
@@ -523,49 +580,6 @@ void  update(const char *studentfile,const char *updatefile){
     fclose(upd);
     fclose(f);
 }
-
-
-
-student *Decreasingorderlist(student **head){
-
-      if (*head == NULL || (*head)->next == NULL) {
-        printf("Nothing to sort\n");
-        return *head;
-    }
-
-    student *sorted = NULL;
-    while (*head != NULL) {
-        student *current = *head;
-        *head = (*head)->next;
-
-        if (sorted == NULL || current->avg > sorted->avg) {
-            current->next = sorted;
-            sorted = current;
-        } else {
-            student *temp = sorted;
-            while (temp->next != NULL && temp->next->avg >= current->avg) {
-                temp = temp->next;
-            }
-            current->next = temp->next;
-            temp->next = current;
-        }
-    }
-
-    *head = sorted;
-    return sorted;
-}
-
-void Displaylist(student *head){
-    student* current=head;
-
-    while ( current != NULL){
-        printf("ID:%d\nFull name:%s %s\nClass:%s\nAverage:%.2f\n",current->id,current->familyName,current->firstName,current->Class,current->avg);
-        current=current->next;
-    }
-
-}
-
-
 
 
 void displayByClass(student *head){
