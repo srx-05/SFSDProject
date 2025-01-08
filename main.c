@@ -264,7 +264,7 @@ void addStudent(student **head, int last_id) {
     scanf("%s", newStudent.Class);
 
     // Input student marks with validation
- // Input student marks
+
     do {
         printf("Enter the mark of this student in SFSD:\n");
         scanf("%f", &newStudent.subjects[0].note);
